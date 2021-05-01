@@ -65,6 +65,7 @@ export class Num {
 
     /**
      * Converts a num to another number system in place.
+     * @param base {number} - is the base that this Num will be converted to.
      */
     public ToBase(base: number) : void {
         if(this._base === base) return;
@@ -150,6 +151,12 @@ export class Num {
         this._decimals = decimals;
     }
 
+    /**
+     * Convert this Num to a string. If `isDecimal` is `true`, then each digit will be separated by a space and any characters other than the first character are decimals.
+     * For example, `101 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
+     *
+     * If `isDecimal` is `false`, then it will be turned into a normal number string.
+     */
     public toString() : string {
         let digits: string[] = [];
         let decimals: string[] = [];
