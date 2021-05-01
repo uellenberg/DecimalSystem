@@ -3,6 +3,8 @@
  * @param num {number} - is the number which will be split.
  * @constructor
  */
+import {Digit} from "./types/Digit";
+
 export const SplitNumber = (num: number) : SplitNumber => {
     const split = num.toString().split(".");
 
@@ -25,33 +27,30 @@ export interface SplitNumber {
 }
 
 /**
- * Get information about a number used for converting to other bases.
- * @param num {number} - is the number which will be used to get info.
+ * Converts a digit to a number
+ * @param digit {Digit} - the digit being converted.
  * @constructor
  */
-export const GetNumberInfo = (num: number) : NumberInfo => {
-    const split = SplitNumber(num);
+export const DigitToNumber = (digit: Digit) : number => {
+    //Essentially, the way this works is that if the number is not an integer, then it is the character code - 87. This is because character code 97 (a) is the first character code for 10.
 
-    return {digits: split.digits, decimals: split.decimals, wholeNumber: parseInt(split.digits + (split.digits || ""))};
+    let num = parseInt(digit.number);
+    if(isNaN(num)) num = digit.number.charCodeAt(0) - 87;
+
+    if(digit.decimals) num += digit.decimals/Math.pow(10, digit.decimals.toString().length);
+
+    return num;
 }
 
 /**
- * Info about a number used for converting to other bases.
+ * Converts a number to a digit, optionally changing its base.
+ * @param num {number} - the number that will be changed to a Digit.
+ * @constructor
  */
-export interface NumberInfo {
-    /**
-     * The number's digits.
-     */
-    digits: string;
+export const NumberToDigit = (num: number) : Digit => {
+    //This is similar to the above, but in reverse.
 
-    /**
-     * The number's decimals. `Null` if the number has no decimals.
-     */
-    decimals?: string;
+    const split = SplitNumber(num);
 
-    /**
-     * The entire number, with decimals treated as normal digits.
-     * For example, 1.101 turns to 1101.
-     */
-    wholeNumber: number;
+    return num < 10 ? {number: split.digits, decimals: split.decimals ? parseInt(split.decimals) : null} : {number: String.fromCharCode(parseInt(split.digits)+87), decimals: split.decimals ? parseInt(split.decimals) : null};
 }
