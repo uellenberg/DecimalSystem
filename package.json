@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "nyc --reporter=lcov mocha --slow 0"
+    "test": "nyc --reporter=lcov mocha --slow 0",
+	"coverage": "codecov"
   },
   "repository": {
     "type": "git",
