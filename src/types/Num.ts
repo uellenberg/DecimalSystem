@@ -58,7 +58,7 @@ export class Num {
 
         if(num.base != null){
             if(typeof(num.num) !== "string"){
-                num.num = num.num.toString();
+                num.num = num.num.toString().trim().toLowerCase();
             }
 
             if(isNaN(num.base)){
@@ -124,7 +124,7 @@ export class Num {
             return new Num({num: convertedNum});
         } else {
             if(typeof(num.num) === "string"){
-                num.num = parseInt(num.num);
+                num.num = parseInt(num.num.trim().toLowerCase());
             }
 
             if(isNaN(num.num)){
