@@ -66,10 +66,9 @@ export class Num {
     /**
      * Converts a num to another number system in place.
      * @param base {number} - is the base that this Num will be converted to.
-     * @param useFloats {boolean} - is a boolean that indicates if floats should be used to store the decimals.
      */
-    public ToBase(base: number, useFloats: boolean = false) : void {
-        if(this._base === base) return;
+    public ToBase(base: number) : Num {
+        if(this._base === base) return this;
 
         //Directly converting from one decimal system to another is hard, so I'm using base 10 as a midpoint between the two.
         if(this._base !== 10 && base !== 10) this.ToBase(10);
@@ -97,11 +96,8 @@ export class Num {
             for (let i = 0; i < this._decimals.length; i++){
                 const number = DigitToNumber(this._decimals[i]);
 
-                out += number*Math.pow(this._base, useFloats ? -i-1 : this._decimals.length-i-1);
+                out += number*Math.pow(this._base, this._decimals.length-i-1);
             }
-
-            //-2 because it starts with 0.
-            if(useFloats) out *= Math.pow(10, out.toString().length-2);
 
             this._decimals = [];
 
@@ -112,7 +108,7 @@ export class Num {
 
             this._base = base;
 
-            return;
+            return this;
         }
 
         this._base = base;
@@ -134,14 +130,13 @@ export class Num {
         digits.reverse();
         this._digits = digits;
 
-        const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""))/(useFloats ? Math.pow(10, this._decimals.length) : 1);
-        //8-bit number
-        const decimalLog = !isNaN(decimal) ? (useFloats ? 8 : Math.ceil(Math.log(decimal)/Math.log(this._base)) + (decimal % this._base === 0 ? 1 : 0)) : 0;
+        const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""));
+        const decimalLog = !isNaN(decimal) ? Math.ceil(Math.log(decimal)/Math.log(this._base)) + (decimal % this._base === 0 ? 1 : 0) : 0;
 
         let decimals: Digit[] = [];
 
         for (let i = 0; i < decimalLog; i++){
-            const number = Math.floor(decimal/Math.pow(this._base, useFloats ? -i-1 : decimalLog-i-1)) % this._base;
+            const number = Math.floor(decimal/Math.pow(this._base, decimalLog-i-1)) % this._base;
             const d = NumberToDigit(number);
 
             decimals.push(d);
@@ -150,6 +145,8 @@ export class Num {
         }
 
         this._decimals = decimals;
+
+        return this;
     }
 
     /**
@@ -166,8 +163,25 @@ export class Num {
             digits.push(digit.number+(digit.decimals || ""));
         }
 
-        for (let decimal of this._decimals) {
-            decimals.push(decimal.number+(decimal.decimals || ""));
+        if(this._base !== 10) {
+            let fraction = parseInt(this._decimals.map(decimal => decimal.number).join("")) / Math.pow(10, this._decimals.length);
+            let tries = 0;
+
+            while (fraction && tries < 8) {
+                const mul = fraction * this._base;
+                const num = Math.floor(mul);
+
+                let decimal = NumberToDigit(num);
+                if (mul - num !== 0) decimal.decimals = (mul - num) * Math.pow(10, (mul - num).toString().length);
+
+                decimals.push(decimal.number + (decimal.decimals || ""));
+
+                tries++;
+            }
+        } else {
+            for (let decimal of this._decimals) {
+                decimals.push(decimal.number + (decimal.decimals || ""));
+            }
         }
 
         let digitsPart = digits.join(this._isDecimal ? " " : "");

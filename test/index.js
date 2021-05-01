@@ -46,8 +46,7 @@ describe("Num", () => {
 
                 num.ToBase(2.5);
                 num.ToBase(10);
-
-                //floats cause the weird number
+                
                 expect(num.toString()).to.eql("9.5");
             });
         });
