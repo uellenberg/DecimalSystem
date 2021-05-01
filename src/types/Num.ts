@@ -173,18 +173,12 @@ export class Num {
             let tries = 0;
 
             while (fraction && tries < 8) {
-                const mul = fraction * this._base;
+                const mul = (fraction * Math.pow(this._base, tries+1)) % this._base;
                 const num = Math.floor(mul);
 
                 let decimal = NumberToDigit(num);
-                if (mul - num !== 0) decimal.decimals = (mul - num) * Math.pow(10, (mul - num).toString().length-2);
 
-                let str = decimal.number;
-                if(decimal.decimals) {
-                    str = "["+str+"."+decimal.decimals+"]";
-                }
-
-                decimals.push(str);
+                decimals.push(decimal.number);
 
                 tries++;
             }
