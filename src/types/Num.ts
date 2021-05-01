@@ -52,19 +52,13 @@ export class Num {
 
         const split = SplitNumber(num);
 
-        let isNegative = false;
-        if(split.digits.startsWith("-")){
-            isNegative = true;
-            split.digits = split.digits.substring(1);
-        }
-
         for (let digit of split.digits) {
-            this._digits.push({number: digit, isNegative});
+            this._digits.push({number: digit});
         }
 
         if(split.decimals){
             for (let decimal of split.decimals) {
-                this._decimals.push({number: decimal, isNegative});
+                this._decimals.push({number: decimal});
             }
         }
     }
@@ -88,22 +82,13 @@ export class Num {
                 const number = DigitToNumber(this._digits[i]);
 
                 out += number*Math.pow(this._base, this._digits.length-i-1);
-                console.log(number, number*Math.pow(this._base, this._digits.length-i-1));
             }
 
             this._digits = [];
 
-            let outStr = out.toString();
-            let isNegative = false;
-
-            if(outStr.startsWith("-")){
-                isNegative = true;
-                outStr = outStr.substring(1);
-            }
-
             //If there ends up being decimals here, something really, really bad happened.
-            for(const digit of outStr){
-                this._digits.push({number: digit, isNegative});
+            for(const digit of out.toString()){
+                this._digits.push({number: digit});
             }
 
             out = 0;
@@ -116,17 +101,9 @@ export class Num {
 
             this._decimals = [];
 
-            outStr = out.toString();
-            isNegative = false;
-
-            if(outStr.startsWith("-")){
-                isNegative = true;
-                outStr = outStr.substring(1);
-            }
-
             //If there ends up being decimals here, something really, really bad happened.
-            for(const digit of outStr){
-                this._decimals.push({number: digit, isNegative});
+            for(const digit of out.toString()){
+                this._decimals.push({number: digit});
             }
 
             this._base = base;
@@ -137,14 +114,12 @@ export class Num {
         this._base = base;
 
         const digit = parseInt(this._digits.map(digit => digit.number).join(""));
-        const digitLog = Math.ceil(Math.log(Math.abs(digit))/Math.log(Math.abs(this._base))) + (digit % this._base === 0 ? 1 : 0);
-        const digitMul = this._digits[0]?.isNegative ? -1 : 1;
-        console.log(digitMul);
+        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: Digit[] = [];
 
         for (let i = 0; i < digitLog; i++){
-            const number = (Math.floor(digit/Math.pow(this._base, i)) % this._base) * digitMul;
+            const number = Math.floor(digit/Math.pow(this._base, i)) % this._base;
             const d = NumberToDigit(number);
 
             digits.push(d);

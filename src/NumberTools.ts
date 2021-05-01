@@ -38,7 +38,6 @@ export const DigitToNumber = (digit: Digit) : number => {
     if(isNaN(num)) num = digit.number.charCodeAt(0) - 87;
 
     if(digit.decimals) num += digit.decimals/Math.pow(10, digit.decimals.toString().length);
-    if(digit.isNegative) num *= -1;
 
     return num;
 }
@@ -53,11 +52,5 @@ export const NumberToDigit = (num: number) : Digit => {
 
     const split = SplitNumber(num);
 
-    let isNegative = false;
-    if(split.digits.startsWith("-")){
-        isNegative = true;
-        split.digits = split.digits.substring(1);
-    }
-
-    return num < 10 ? {number: split.digits, decimals: split.decimals ? parseInt(split.decimals) : null, isNegative} : {number: String.fromCharCode(parseInt(split.digits)+87), decimals: split.decimals ? parseInt(split.decimals) : null, isNegative};
+    return num < 10 ? {number: split.digits, decimals: split.decimals ? parseInt(split.decimals) : null} : {number: String.fromCharCode(parseInt(split.digits)+87), decimals: split.decimals ? parseInt(split.decimals) : null};
 }

@@ -9,22 +9,18 @@ describe("Num", () => {
                     _base: 10, _isDecimal: false, _digits:
                         [
                             {
-                                number: "1",
-                                isNegative: false
+                                number: "1"
                             },
                             {
-                                number: "0",
-                                isNegative: false
+                                number: "0"
                             },
                             {
-                                number: "0",
-                                isNegative: false
+                                number: "0"
                             }
                         ],
                     _decimals: [
                         {
-                            number: "1",
-                            isNegative: false
+                            number: "1"
                         }
                     ]
                 });
@@ -67,12 +63,8 @@ describe("Num", () => {
                 num.ToBase(2.5);
                 expect(num.toString()).to.eql("1[0.5][1.5].[0.5][0.5][0.5][0.5][0.5][0.5][0.5][0.5]");
 
-                const num2 = new Num(16);
-                console.log(num2);
-                num2.ToBase(-2);
-                console.log(num2);
-                num2.ToBase(10);
-                console.log(num2);
+                const num2 = new Num(9);
+                num2.ToBase(2.5);
                 expect(num2.toString()).to.eql("1[0.5][1.5]");
             });
         });
