@@ -58,12 +58,13 @@ export const NumberToDigit = (num: number) : Digit => {
  * Convert a fraction in base 10 to another base.
  * @param fraction {number} - is the base 10 fraction which will be converted.
  * @param base {number} - is the base which the fraction will be converted to.
+ * @param precision {number} - is the maximum decimal places a decimal should have.
  */
-export const FractionToBase = (fraction: number, base: number) : string[] => {
+export const FractionToBase = (fraction: number, base: number, precision: number) : string[] => {
     let digits: string[] = [];
     let tries = 0;
 
-    while (fraction && tries < 8) {
+    while (fraction && tries < precision) {
         const mul = (fraction * Math.pow(base, tries+1)) % base;
         const num = Math.floor(mul);
 

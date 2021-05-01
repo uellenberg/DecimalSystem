@@ -154,15 +154,16 @@ export class Num {
      * For example, `[1.01] 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
      *
      * If `isDecimal` is `false`, then it will be turned into a normal number string.
+     * @param precision {number} - is the maximum decimal places a decimal should have.
      */
-    public toString() : string {
+    public toString(precision: number = 8) : string {
         let digits: string[] = [];
         let decimals: string[] = [];
 
         for (let digit of this._digits) {
             let str = digit.number;
             if(digit.decimals) {
-                str = "["+str+"."+FractionToBase(digit.decimals, this._base).join("")+"]";
+                str = "["+str+"."+FractionToBase(digit.decimals, this._base, precision).join("")+"]";
             }
 
             digits.push(str);
@@ -171,12 +172,12 @@ export class Num {
         if(this._base !== 10) {
             let fraction = parseInt(this._decimals.map(decimal => decimal.number).join("")) / Math.pow(10, this._decimals.length);
 
-            decimals.push(...FractionToBase(fraction, this._base));
+            decimals.push(...FractionToBase(fraction, this._base, precision));
         } else {
             for (let decimal of this._decimals) {
                 let str = decimal.number;
                 if(decimal.decimals) {
-                    str = "["+str+"."+FractionToBase(decimal.decimals, this._base).join("")+"]";
+                    str = "["+str+"."+FractionToBase(decimal.decimals, this._base, precision).join("")+"]";
                 }
 
                 decimals.push(str);
