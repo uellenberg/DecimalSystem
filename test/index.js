@@ -39,7 +39,7 @@ describe("Num", () => {
                 const num2 = new Num(9);
                 num2.ToBase(2);
                 num2.ToBase(10);
-                expect(num2.toString()).to.eql("9.0");
+                expect(num2.toString()).to.eql("9");
             });
         });
 
@@ -53,7 +53,7 @@ describe("Num", () => {
                 const num2 = new Num(9);
                 num2.ToBase(2.5);
                 num2.ToBase(10);
-                expect(num2.toString()).to.eql("9.0");
+                expect(num2.toString()).to.eql("9");
             });
         });
 
@@ -61,11 +61,11 @@ describe("Num", () => {
             it("should return the correct Num.", () => {
                 const num = new Num(9.5);
                 num.ToBase(2.5);
-                expect(num.toString()).to.eql("1 05 15.0500 0500 0500 0500 0500 0500 0500 0500");
+                expect(num.toString()).to.eql("1[0.5][1.5].[0.5][0.5][0.5][0.5][0.5][0.5][0.5][0.5]");
 
                 const num2 = new Num(9);
                 num2.ToBase(2.5);
-                expect(num2.toString()).to.eql("1 05 15");
+                expect(num2.toString()).to.eql("1[0.5][1.5]");
             });
         });
     });

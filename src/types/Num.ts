@@ -150,8 +150,8 @@ export class Num {
     }
 
     /**
-     * Convert this Num to a string. If `isDecimal` is `true`, then each digit will be separated by a space and any characters other than the first character are decimals.
-     * For example, `101 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
+     * Convert this Num to a string. If `isDecimal` is `true`, then each decimal digit will be encased in brackets.
+     * For example, `[1.01] 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
      *
      * If `isDecimal` is `false`, then it will be turned into a normal number string.
      */
@@ -160,7 +160,12 @@ export class Num {
         let decimals: string[] = [];
 
         for (let digit of this._digits) {
-            digits.push(digit.number+(digit.decimals || ""));
+            let str = digit.number;
+            if(digit.decimals) {
+                str = "["+str+"."+digit.decimals+"]";
+            }
+
+            digits.push(str);
         }
 
         if(this._base !== 10) {
@@ -172,20 +177,32 @@ export class Num {
                 const num = Math.floor(mul);
 
                 let decimal = NumberToDigit(num);
-                if (mul - num !== 0) decimal.decimals = (mul - num) * Math.pow(10, (mul - num).toString().length);
+                if (mul - num !== 0) decimal.decimals = (mul - num) * Math.pow(10, (mul - num).toString().length-2);
 
-                decimals.push(decimal.number + (decimal.decimals || ""));
+                let str = decimal.number;
+                if(decimal.decimals) {
+                    str = "["+str+"."+decimal.decimals+"]";
+                }
+
+                decimals.push(str);
 
                 tries++;
             }
         } else {
             for (let decimal of this._decimals) {
-                decimals.push(decimal.number + (decimal.decimals || ""));
+                let str = decimal.number;
+                if(decimal.decimals) {
+                    str = "["+str+"."+decimal.decimals+"]";
+                }
+
+                decimals.push(str);
             }
         }
 
-        let digitsPart = digits.join(this._isDecimal ? " " : "");
-        let decimalsPart = decimals.join(this._isDecimal ? " " : "");
+        let digitsPart = digits.join("");
+        let decimalsPart = decimals.join("");
+
+        if(decimalsPart === "0") decimalsPart = "";
 
         return digitsPart+(decimalsPart ? "." : "")+decimalsPart;
     }
