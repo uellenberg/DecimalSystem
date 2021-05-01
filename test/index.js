@@ -51,5 +51,16 @@ describe("Num", () => {
                 });
             });
         });
+
+        context("with number to base 2.5", () => {
+            it("should return the correct Num.", () => {
+                const num = new Num(9.5);
+
+                num.ToBase(2.5);
+                num.ToBase(10);
+
+                expect(num.digits[0].number).to.eql("9");
+            });
+        });
     });
 });

@@ -114,7 +114,7 @@ export class Num {
         this._base = base;
 
         const digit = parseInt(this._digits.map(digit => digit.number).join(""));
-        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base));
+        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: Digit[] = [];
 
@@ -124,11 +124,12 @@ export class Num {
             digits.push(NumberToDigit(number));
         }
 
+        digits.reverse();
         this._digits = digits;
 
         const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""))/Math.pow(10, this._decimals.length);
         //8-bit number
-        const decimalLog = 8;
+        const decimalLog = !isNaN(decimal) ? 8 : 0;
 
         let decimals: Digit[] = [];
 
