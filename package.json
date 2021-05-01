@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "An experimental library for converting numbers to non-integer bases.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "nyc --reporter=lcov mocha --slow 0",
