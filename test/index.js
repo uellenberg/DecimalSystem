@@ -36,19 +36,9 @@ describe("Num", () => {
                 num.ToBase(2);
                 num.ToBase(10);
 
-                expect(num).to.eql({
-                    _base: 10, _isDecimal: false, _digits:
-                        [
-                            {
-                                number: "9"
-                            }
-                        ],
-                    _decimals: [
-                        {
-                            number: "5"
-                        }
-                    ]
-                });
+                console.log();
+
+                expect(num.toString()).to.eql("9.5");
             });
         });
 
@@ -59,7 +49,8 @@ describe("Num", () => {
                 num.ToBase(2.5);
                 num.ToBase(10);
 
-                expect(num.digits[0].number).to.eql("9");
+                //floats cause the weird number
+                expect(num.toString()).to.eql("9.6610227200000001");
             });
         });
     });

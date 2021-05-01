@@ -72,6 +72,8 @@ export class Num {
         //Directly converting from one decimal system to another is hard, so I'm using base 10 as a midpoint between the two.
         if(this._base !== 10 && base !== 10) this.ToBase(10);
 
+        this._isDecimal = false;
+
         if(base === 10){
             let out = 0;
 
@@ -120,8 +122,11 @@ export class Num {
 
         for (let i = 0; i < digitLog; i++){
             const number = Math.floor(digit/Math.pow(this._base, i)) % this._base;
+            const d = NumberToDigit(number);
 
-            digits.push(NumberToDigit(number));
+            digits.push(d);
+
+            if(d.decimals) this._isDecimal = true;
         }
 
         digits.reverse();
@@ -135,10 +140,31 @@ export class Num {
 
         for (let i = 0; i < decimalLog; i++){
             const number = Math.floor(decimal/Math.pow(this._base, -i-1)) % this._base;
+            const d = NumberToDigit(number);
 
-            decimals.push(NumberToDigit(number));
+            decimals.push(d);
+
+            if(d.decimals) this._isDecimal = true;
         }
 
         this._decimals = decimals;
+    }
+
+    public toString() : string {
+        let digits: string[] = [];
+        let decimals: string[] = [];
+
+        for (let digit of this._digits) {
+            digits.push(digit.number+(digit.decimals || ""));
+        }
+
+        for (let decimal of this._decimals) {
+            decimals.push(decimal.number+(decimal.decimals || ""));
+        }
+
+        let digitsPart = digits.join(this._isDecimal ? " " : "");
+        let decimalsPart = decimals.join(this._isDecimal ? " " : "");
+
+        return digitsPart+"."+decimalsPart;
     }
 }
