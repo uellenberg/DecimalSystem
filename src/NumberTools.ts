@@ -29,7 +29,6 @@ export interface SplitNumber {
 /**
  * Converts a digit to a number
  * @param digit {Digit} - the digit being converted.
- * @constructor
  */
 export const DigitToNumber = (digit: Digit) : number => {
     //Essentially, the way this works is that if the number is not an integer, then it is the character code - 87. This is because character code 97 (a) is the first character code for 10.
@@ -53,4 +52,27 @@ export const NumberToDigit = (num: number) : Digit => {
     const split = SplitNumber(num);
 
     return num < 10 ? {number: split.digits, decimals: split.decimals ? parseInt(split.decimals) : null} : {number: String.fromCharCode(parseInt(split.digits)+87), decimals: split.decimals ? parseInt(split.decimals) : null};
+}
+
+/**
+ * Convert a fraction in base 10 to another base.
+ * @param fraction {number} - is the base 10 fraction which will be converted.
+ * @param base {number} - is the base which the fraction will be converted to.
+ */
+export const FractionToBase = (fraction: number, base: number) : string[] => {
+    let digits: string[] = [];
+    let tries = 0;
+
+    while (fraction && tries < 8) {
+        const mul = (fraction * Math.pow(base, tries+1)) % base;
+        const num = Math.floor(mul);
+
+        let digit = NumberToDigit(num);
+
+        digits.push(digit.number);
+
+        tries++;
+    }
+
+    return digits;
 }

@@ -1,5 +1,5 @@
 import {Digit} from "./Digit";
-import {DigitToNumber, NumberToDigit, SplitNumber} from "../NumberTools";
+import {DigitToNumber, FractionToBase, NumberToDigit, SplitNumber} from "../NumberTools";
 
 /**
  * A class providing information about a number.
@@ -162,7 +162,7 @@ export class Num {
         for (let digit of this._digits) {
             let str = digit.number;
             if(digit.decimals) {
-                str = "["+str+"."+digit.decimals+"]";
+                str = "["+str+"."+FractionToBase(digit.decimals, this._base).join("")+"]";
             }
 
             digits.push(str);
@@ -170,23 +170,13 @@ export class Num {
 
         if(this._base !== 10) {
             let fraction = parseInt(this._decimals.map(decimal => decimal.number).join("")) / Math.pow(10, this._decimals.length);
-            let tries = 0;
 
-            while (fraction && tries < 8) {
-                const mul = (fraction * Math.pow(this._base, tries+1)) % this._base;
-                const num = Math.floor(mul);
-
-                let decimal = NumberToDigit(num);
-
-                decimals.push(decimal.number);
-
-                tries++;
-            }
+            decimals.push(...FractionToBase(fraction, this._base));
         } else {
             for (let decimal of this._decimals) {
                 let str = decimal.number;
                 if(decimal.decimals) {
-                    str = "["+str+"."+decimal.decimals+"]";
+                    str = "["+str+"."+FractionToBase(decimal.decimals, this._base).join("")+"]";
                 }
 
                 decimals.push(str);

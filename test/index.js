@@ -61,11 +61,11 @@ describe("Num", () => {
             it("should return the correct Num.", () => {
                 const num = new Num(9.5);
                 num.ToBase(2.5);
-                expect(num.toString()).to.eql("1[0.5][1.5].00001220");
+                expect(num.toString()).to.eql("1[0.01000011][1.01000011].00001220");
 
                 const num2 = new Num(9);
                 num2.ToBase(2.5);
-                expect(num2.toString()).to.eql("1[0.5][1.5]");
+                expect(num2.toString()).to.eql("1[0.01000011][1.01000011]");
             });
         });
     });
