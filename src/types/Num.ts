@@ -1,5 +1,6 @@
 import {Digit} from "./Digit";
 import {DigitToNumber, FractionToBase, NumberToDigit, SplitNumber} from "../NumberTools";
+import {NumOptions} from "./NumOptions";
 
 /**
  * A class providing information about a number.
@@ -44,21 +45,29 @@ export class Num {
      * @param num {number} - is the number which will be used.
      * @constructor
      */
-    public constructor(num: number) {
+    public constructor(num: NumOptions) {
         this._base = 10;
         this._isDecimal = false;
         this._digits = [];
         this._decimals = [];
 
-        const split = SplitNumber(num);
+        if(typeof(num.num) === "string"){
+            if(!num.base){
+                throw new Error("A base is required when inputting a string number.");
+            }
 
-        for (let digit of split.digits) {
-            this._digits.push({number: digit});
-        }
+            this._base = num.base;
+        } else {
+            const split = SplitNumber(num.num);
 
-        if(split.decimals){
-            for (let decimal of split.decimals) {
-                this._decimals.push({number: decimal});
+            for (let digit of split.digits) {
+                this._digits.push({number: digit});
+            }
+
+            if(split.decimals){
+                for (let decimal of split.decimals) {
+                    this._decimals.push({number: decimal});
+                }
             }
         }
     }
@@ -91,21 +100,6 @@ export class Num {
                 this._digits.push({number: digit});
             }
 
-            out = 0;
-
-            for (let i = 0; i < this._decimals.length; i++){
-                const number = DigitToNumber(this._decimals[i]);
-
-                out += number*Math.pow(this._base, this._decimals.length-i-1);
-            }
-
-            this._decimals = [];
-
-            //If there ends up being decimals here, something really, really bad happened.
-            for(const digit of out.toString()){
-                this._decimals.push({number: digit});
-            }
-
             this._base = base;
 
             return this;
@@ -129,22 +123,6 @@ export class Num {
 
         digits.reverse();
         this._digits = digits;
-
-        const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""));
-        const decimalLog = !isNaN(decimal) ? Math.ceil(Math.log(decimal)/Math.log(this._base)) + (decimal % this._base === 0 ? 1 : 0) : 0;
-
-        let decimals: Digit[] = [];
-
-        for (let i = 0; i < decimalLog; i++){
-            const number = Math.floor(decimal/Math.pow(this._base, decimalLog-i-1)) % this._base;
-            const d = NumberToDigit(number);
-
-            decimals.push(d);
-
-            if(d.decimals) this._isDecimal = true;
-        }
-
-        this._decimals = decimals;
 
         return this;
     }
