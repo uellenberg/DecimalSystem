@@ -11,4 +11,9 @@ export interface Digit {
      * The decimals of a digit. For example, in the number `A 2 3 4.56`, the number of the fourth digit is `56`.
      */
     decimals?: number;
+
+    /**
+     * If the digit is negative. In a negative number, all digits are negative.
+     */
+    isNegative?: boolean;
 }
