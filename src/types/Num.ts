@@ -2,7 +2,7 @@ import {Digit} from "./Digit";
 import {DigitToNumber, NumberToDigit, SplitNumber} from "../NumberTools";
 
 /**
- * An class providing information about a number.
+ * A class providing information about a number.
  */
 export class Num {
     private _base: number;
