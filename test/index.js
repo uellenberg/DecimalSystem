@@ -36,8 +36,6 @@ describe("Num", () => {
                 num.ToBase(2);
                 num.ToBase(10);
 
-                console.log();
-
                 expect(num.toString()).to.eql("9.5");
             });
         });
@@ -50,7 +48,7 @@ describe("Num", () => {
                 num.ToBase(10);
 
                 //floats cause the weird number
-                expect(num.toString()).to.eql("9.6610227200000001");
+                expect(num.toString()).to.eql("9.5");
             });
         });
     });

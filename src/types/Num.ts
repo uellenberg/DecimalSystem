@@ -66,8 +66,9 @@ export class Num {
     /**
      * Converts a num to another number system in place.
      * @param base {number} - is the base that this Num will be converted to.
+     * @param useFloats {boolean} - is a boolean that indicates if floats should be used to store the decimals.
      */
-    public ToBase(base: number) : void {
+    public ToBase(base: number, useFloats: boolean = false) : void {
         if(this._base === base) return;
 
         //Directly converting from one decimal system to another is hard, so I'm using base 10 as a midpoint between the two.
@@ -96,11 +97,11 @@ export class Num {
             for (let i = 0; i < this._decimals.length; i++){
                 const number = DigitToNumber(this._decimals[i]);
 
-                out += number*Math.pow(this._base, -i-1);
+                out += number*Math.pow(this._base, useFloats ? -i-1 : this._decimals.length-i-1);
             }
 
             //-2 because it starts with 0.
-            out *= Math.pow(10, out.toString().length-2);
+            if(useFloats) out *= Math.pow(10, out.toString().length-2);
 
             this._decimals = [];
 
@@ -133,14 +134,14 @@ export class Num {
         digits.reverse();
         this._digits = digits;
 
-        const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""))/Math.pow(10, this._decimals.length);
+        const decimal = parseInt(this._decimals.map(decimal => decimal.number).join(""))/(useFloats ? Math.pow(10, this._decimals.length) : 1);
         //8-bit number
-        const decimalLog = !isNaN(decimal) ? 8 : 0;
+        const decimalLog = !isNaN(decimal) ? (useFloats ? 8 : Math.ceil(Math.log(decimal)/Math.log(this._base)) + (decimal % this._base === 0 ? 1 : 0)) : 0;
 
         let decimals: Digit[] = [];
 
         for (let i = 0; i < decimalLog; i++){
-            const number = Math.floor(decimal/Math.pow(this._base, -i-1)) % this._base;
+            const number = Math.floor(decimal/Math.pow(this._base, useFloats ? -i-1 : decimalLog-i-1)) % this._base;
             const d = NumberToDigit(number);
 
             decimals.push(d);
