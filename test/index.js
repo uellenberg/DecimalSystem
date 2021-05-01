@@ -1,12 +1,12 @@
-const {FromNumber} = require("../dist/index");
+const {Num} = require("../dist/index");
 const {expect} = require("chai");
 
 describe("NumberTools", () => {
     describe("FromNumber", () => {
         context("with integer test", () => {
             it("should return the correct Num.", () => {
-                expect(FromNumber(100)).to.eql({
-                    base: 10, isDecimal: false, digits:
+                expect(new Num(100)).to.eql({
+                    _base: 10, _isDecimal: false, _digits:
                         [
                             {
                                 number: "1"
@@ -18,7 +18,7 @@ describe("NumberTools", () => {
                                 number: "0"
                             }
                         ],
-                    decimals: []
+                    _decimals: []
                 });
             });
         });
