@@ -1,6 +1,9 @@
 import {Digit} from "./Digit";
 import {DigitToNumber, FractionToBase, NumberToDigit, SplitNumber} from "../NumberTools";
 import {NumOptions} from "./NumOptions";
+import {RecursiveMap, RegexTokenizer, TokenizerChain} from "parselib";
+
+const inputParseChain = new TokenizerChain(new RegexTokenizer(/[\[\]]/g));
 
 /**
  * A class providing information about a number.
@@ -45,19 +48,89 @@ export class Num {
      * @param num {number} - is the number which will be used.
      * @constructor
      */
-    public constructor(num: NumOptions) {
+    public constructor(num: NumOptions | number) {
         this._base = 10;
         this._isDecimal = false;
         this._digits = [];
         this._decimals = [];
 
-        if(typeof(num.num) === "string"){
-            if(!num.base){
-                throw new Error("A base is required when inputting a string number.");
+        if(typeof(num) === "number") num = {num};
+
+        if(num.base != null){
+            if(typeof(num.num) !== "string"){
+                num.num = num.num.toString();
+            }
+
+            if(isNaN(num.base)){
+                throw new Error("The base field is not a valid number.");
             }
 
             this._base = num.base;
+
+            let inputSplit = num.num.split(/\.(?![^[]*?])/g);
+
+            const decimals = inputSplit.length > 1 ? inputSplit.pop() : "";
+            const digits = inputSplit.join(".");
+
+            const tokens = inputParseChain.run(digits);
+            const parsedDigits = RecursiveMap<Digit>(tokens, token => token.isToken && token.value === "[", token => token.isToken && token.value === "]", token => {
+                const digitSplit = token.value.split(".");
+
+                const number = digitSplit.shift();
+                const decimals = digitSplit.shift();
+
+                if(number.length > 1){
+                    let out: Digit[] = [];
+
+                    for(const digit of number){
+                        out.push({number: digit});
+                    }
+
+                    return out;
+                }
+
+                return {number, decimals};
+            }, tokens => tokens, tokens => {
+                let out: Digit[] = [];
+
+                tokens.forEach(token => {
+                    if(Array.isArray(token)) out.push(...token);
+                    else out.push(token);
+                });
+
+                return out;
+            });
+
+            let convertedNum = 0;
+
+            for (let i = 0; i < parsedDigits.length; i++) {
+                convertedNum += DigitToNumber({number: parsedDigits[i].number}) * Math.pow(this._base, parsedDigits.length-i-1);
+
+                if(parsedDigits[i].decimals){
+                    const decimals1 = parsedDigits[i].decimals.toString();
+
+                    for (let y = 0; y < decimals1.length; y++) {
+                        convertedNum += DigitToNumber({number: decimals1[y]})/Math.pow(this._base, y+1);
+                    }
+                }
+            }
+
+            if(decimals){
+                for (let y = 0; y < decimals.length; y++) {
+                    convertedNum += DigitToNumber({number: decimals[y]})/Math.pow(this._base, y+1);
+                }
+            }
+
+            return new Num({num: convertedNum});
         } else {
+            if(typeof(num.num) === "string"){
+                num.num = parseInt(num.num);
+            }
+
+            if(isNaN(num.num)){
+                throw new Error("The input number is not valid. If you are trying to use a non-base 10 number, supply a base field to the options.");
+            }
+
             const split = SplitNumber(num.num);
 
             for (let digit of split.digits) {
