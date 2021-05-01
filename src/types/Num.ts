@@ -165,6 +165,6 @@ export class Num {
         let digitsPart = digits.join(this._isDecimal ? " " : "");
         let decimalsPart = decimals.join(this._isDecimal ? " " : "");
 
-        return digitsPart+"."+decimalsPart;
+        return digitsPart+(decimalsPart ? "." : "")+decimalsPart;
     }
 }
