@@ -61,6 +61,15 @@ describe("Num", () => {
                 expect(new Num(5477458767).ToBase(65536).toString()).to.eql("1䛒掦");
             });
         });
+
+        //this shouldn't be possible
+        context("with number to base 65536.65536", () => {
+            it("should return the correct Num.", () => {
+                expect(new Num(5477458767.436).ToBase(65536.65536).toString()).to.eql("1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯].濴ﮪ専祝㋟雏");
+
+                expect(new Num(5477458767).ToBase(65536.65536).toString()).to.eql("1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯]");
+            });
+        });
     });
 
     describe("Constructor (from base)", () => {
@@ -82,7 +91,7 @@ describe("Num", () => {
             });
         });
 
-        //this is also ridiculous
+        //this is ridiculous
         context("with a base 65536", () => {
             it("should return the correct Num.", () => {
                 //I can't believe this actually worked
@@ -90,6 +99,16 @@ describe("Num", () => {
                 expect(new Num({num: "1䛒掦.濴늄ອї0000", base: 65536}).ToBase(10).toString()).to.eql("5477458767.436");
 
                 expect(new Num({num: "1䛒掦", base: 65536}).ToBase(10).toString()).to.eql("5477458767");
+            });
+        });
+
+        //this shouldn't be possible
+        context("with number to base 65536.65536", () => {
+            it("should return the correct Num.", () => {
+                //I am converting a number to base 65536.65536 and back to base 10 losslessly. How the hell?
+                expect(new Num({num: "1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯].濴ﮪ専祝㋟雏", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458767.436");
+
+                expect(new Num({num: "1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯]", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458767");
             });
         });
     });
