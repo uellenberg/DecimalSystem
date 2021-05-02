@@ -31,7 +31,7 @@ describe("Num", () => {
     describe("ToBase", () => {
         context("with number to base 2", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(9.5).ToBase(2).toString()).to.eql("1001.10000000");
+                expect(new Num(9.5).ToBase(2).toString()).to.eql("1001.1");
 
                 expect(new Num(9).ToBase(2).toString()).to.eql("1001");
             });
@@ -39,9 +39,9 @@ describe("Num", () => {
 
         context("with number to base 2.5", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("1[0.10021200][1.10021200].10021200");
+                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("1[0.100212][1.100212].100212");
 
-                expect(new Num(9).ToBase(2.5).toString()).to.eql("1[0.10021200][1.10021200]");
+                expect(new Num(9).ToBase(2.5).toString()).to.eql("1[0.100212][1.100212]");
             });
         });
 
@@ -56,7 +56,7 @@ describe("Num", () => {
         //this is ridiculous
         context("with number to base 65536", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(5477458767.436).ToBase(65536).toString()).to.eql("1䛒掦.濴늄ອї0000");
+                expect(new Num(5477458767.436).ToBase(65536).toString()).to.eql("1䛒掦.濴늄ອї");
 
                 expect(new Num(5477458767).ToBase(65536).toString()).to.eql("1䛒掦");
             });
@@ -84,10 +84,10 @@ describe("Num", () => {
         context("with a base 2.5 number", () => {
             it("should return the correct Num.", () => {
                 //9.5, some with inaccuracies
-                expect(new Num({num: "1[0.10021200][1.10021200].10021200", base: 2.5}).ToBase(10).toString()).to.eql("9.363343999999998");
+                expect(new Num({num: "1[0.100212][1.100212].100212", base: 2.5}).ToBase(10).toString()).to.eql("9.363343999999998");
 
                 //9, some with inaccuracies
-                expect(new Num({num: "1[0.10021200][1.10021200]", base: 2.5}).ToBase(10).toString()).to.eql("8.893711999999999");
+                expect(new Num({num: "1[0.100212][1.100212]", base: 2.5}).ToBase(10).toString()).to.eql("8.893711999999999");
             });
         });
 

@@ -62,13 +62,19 @@ export const NumberToDigit = (num: number) : Digit => {
  */
 export const FractionToBase = (fraction: number, base: number, precision: number) : string[] => {
     let digits: string[] = [];
+    let toAdd: string[] = [];
     let tries = 0;
 
     while (fraction && tries < precision) {
         const num = Math.floor((fraction * Math.pow(base, tries+1)) % base);
         let digit = NumberToDigit(num);
 
-        digits.push(digit.number);
+        if(digit.number !== "0") {
+            digits.push(...toAdd, digit.number);
+            toAdd = [];
+        } else {
+            toAdd.push("0");
+        }
 
         tries++;
     }
