@@ -102,12 +102,19 @@ export class Num {
         const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: string[] = [];
+        let toAdd: string[] = [];
 
         for (let i = digitLog-1; i > (-1*precision)-1; i--){
             let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
             digit -= number * Math.pow(this._base, i);
 
-            digits.push(NumberToDigit(number));
+            const digitStr = NumberToDigit(number);
+
+            if(digitStr !== "0") {
+                digits.push(...toAdd, digitStr);
+                toAdd = [];
+            }
+            else toAdd.push(digitStr);
 
             if(digit <= 0) break;
         }

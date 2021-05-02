@@ -25,9 +25,9 @@ describe("Num", () => {
 
         context("with number to base 2.5", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("110.12010100");
+                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("110.120101");
 
-                expect(new Num(9).ToBase(2.5).toString()).to.eql("110.01110000");
+                expect(new Num(9).ToBase(2.5).toString()).to.eql("110.0111");
             });
         });
 
