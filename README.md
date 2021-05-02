@@ -1,4 +1,4 @@
-# NumberSystem
+# DecimalSystem
 An experimental library to convert numbers to different number systems, especially non-integer ones. What this means is up for you to decide. If you want to use it, take a look at some tests.
 
 ## Why?

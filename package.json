@@ -1,7 +1,7 @@
 {
-  "name": "numbersystem",
+  "name": "decimalsystem",
   "version": "1.0.0",
-  "description": "An experimental library for converting numbers to non-integer bases.",
+  "description": "An experimental library for converting numbers to non-integer (decimal) bases.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uellenberg/NumberSystem.git"
+    "url": "git+https://github.com/uellenberg/DecimalSystem.git"
   },
   "keywords": [
     "number",
@@ -27,15 +27,17 @@
     "integer",
     "non-int",
     "non-integer",
-    "numbersystem",
-    "numbersystems"
+	"decimal",
+	"dec",
+    "decimalsystem",
+    "decimalsystems"
   ],
   "author": "Jonah Uellenberg",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/uellenberg/NumberSystem/issues"
+    "url": "https://github.com/uellenberg/DecimalSystem/issues"
   },
-  "homepage": "https://github.com/uellenberg/NumberSystem#readme",
+  "homepage": "https://github.com/uellenberg/DecimalSystem#readme",
   "devDependencies": {
     "@types/node": "^15.0.1",
     "chai": "^4.3.4",
