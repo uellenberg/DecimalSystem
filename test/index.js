@@ -29,68 +29,36 @@ describe("Num", () => {
     });
 
     describe("ToBase", () => {
-        context("with number to base 2, then back to base 10", () => {
+        context("with number to base 2", () => {
             it("should return the correct Num.", () => {
-                const num = new Num(9.5);
-                num.ToBase(2);
-                num.ToBase(10);
-                expect(num.toString()).to.eql("9.5");
+                expect(new Num(9.5).ToBase(2).toString()).to.eql("1001.10000000");
 
-                const num2 = new Num(9);
-                num2.ToBase(2);
-                num2.ToBase(10);
-                expect(num2.toString()).to.eql("9");
-            });
-        });
-
-        context("with number to base 2.5, then back to base 10", () => {
-            it("should return the correct Num.", () => {
-                const num = new Num(9.5);
-                num.ToBase(2.5);
-                num.ToBase(10);
-                expect(num.toString()).to.eql("9.5");
-
-                const num2 = new Num(9);
-                num2.ToBase(2.5);
-                num2.ToBase(10);
-                expect(num2.toString()).to.eql("9");
+                expect(new Num(9).ToBase(2).toString()).to.eql("1001");
             });
         });
 
         context("with number to base 2.5", () => {
             it("should return the correct Num.", () => {
-                const num = new Num(9.5);
-                num.ToBase(2.5);
-                expect(num.toString()).to.eql("1[0.10021200][1.10021200].10021200");
+                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("1[0.10021200][1.10021200].10021200");
 
-                const num2 = new Num(9);
-                num2.ToBase(2.5);
-                expect(num2.toString()).to.eql("1[0.10021200][1.10021200]");
+                expect(new Num(9).ToBase(2.5).toString()).to.eql("1[0.10021200][1.10021200]");
             });
         });
 
         context("with number to base 16", () => {
             it("should return the correct Num.", () => {
-                const num = new Num(6858.9);
-                num.ToBase(16);
-                expect(num.toString()).to.eql("1aca.e6666666");
+                expect(new Num(6858.9).ToBase(16).toString()).to.eql("1aca.e6666666");
 
-                const num2 = new Num(6858);
-                num2.ToBase(16);
-                expect(num2.toString()).to.eql("1aca");
+                expect(new Num(6858).ToBase(16).toString()).to.eql("1aca");
             });
         });
 
         //this is ridiculous
         context("with number to base 65536", () => {
             it("should return the correct Num.", () => {
-                const num = new Num(5477458767.436);
-                num.ToBase(65536);
-                expect(num.toString()).to.eql("1䛒掦.濴늄ອї0000");
+                expect(new Num(5477458767.436).ToBase(65536).toString()).to.eql("1䛒掦.濴늄ອї0000");
 
-                const num2 = new Num(5477458767);
-                num2.ToBase(65536);
-                expect(num2.toString()).to.eql("1䛒掦");
+                expect(new Num(5477458767).ToBase(65536).toString()).to.eql("1䛒掦");
             });
         });
     });
@@ -98,41 +66,30 @@ describe("Num", () => {
     describe("Constructor (from base)", () => {
         context("with a base 16 number", () => {
             it("should return the correct Num.", () => {
-                const num = new Num({num: "1aca.e6666666", base: 16});
-                num.ToBase(10);
-                expect(num.toString()).to.eql("6858.899999999907");
+                expect(new Num({num: "1aca.e6666666", base: 16}).ToBase(10).toString()).to.eql("6858.899999999907");
 
-                const num2 = new Num({num: "1aca", base: 16});
-                num2.ToBase(10);
-                expect(num2.toString()).to.eql("6858");
+                expect(new Num({num: "1aca", base: 16}).ToBase(10).toString()).to.eql("6858");
             });
         });
 
         context("with a base 2.5 number", () => {
             it("should return the correct Num.", () => {
-                const num = new Num({num: "1[0.10021200][1.10021200].10021200", base: 2.5});
-                num.ToBase(10);
                 //9.5, some with inaccuracies
-                expect(num.toString()).to.eql("9.363343999999998");
+                expect(new Num({num: "1[0.10021200][1.10021200].10021200", base: 2.5}).ToBase(10).toString()).to.eql("9.363343999999998");
 
-                const num2 = new Num({num: "1[0.10021200][1.10021200]", base: 2.5});
-                num2.ToBase(10);
                 //9, some with inaccuracies
-                expect(num2.toString()).to.eql("8.893711999999999");
+                expect(new Num({num: "1[0.10021200][1.10021200]", base: 2.5}).ToBase(10).toString()).to.eql("8.893711999999999");
             });
         });
 
         //this is also ridiculous
         context("with a base 65536", () => {
             it("should return the correct Num.", () => {
-                const num = new Num({num: "1䛒掦.濴늄ອї0000", base: 65536});
-                num.ToBase(10);
                 //I can't believe this actually worked
-                expect(num.toString()).to.eql("5477458767.436");
 
-                const num2 = new Num({num: "1䛒掦", base: 65536});
-                num2.ToBase(10);
-                expect(num2.toString()).to.eql("5477458767");
+                expect(new Num({num: "1䛒掦.濴늄ອї0000", base: 65536}).ToBase(10).toString()).to.eql("5477458767.436");
+
+                expect(new Num({num: "1䛒掦", base: 65536}).ToBase(10).toString()).to.eql("5477458767");
             });
         });
     });
