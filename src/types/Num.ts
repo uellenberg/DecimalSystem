@@ -1,4 +1,4 @@
-import {DigitToNumber, FractionToBase, NumberToDigit, SplitNumber} from "../NumberTools";
+import {DigitToNumber, NumberToDigit} from "../NumberTools";
 import {NumOptions} from "./NumOptions";
 
 /**
@@ -18,18 +18,10 @@ export class Num {
     }
 
     /**
-     * The non-decimal digits of a number.
-     * For example, in the number `1234.56`, this will contain the digits `1234`.
+     * The number that this Num is using.
      * @private
      */
-    private readonly _digits: string[] = [];
-
-    /**
-     * The decimal digits of a number.
-     * For example, in the number `1234.56`, this will contain the digit `56`.
-     * @private
-     */
-    private readonly _decimals: string[] = [];
+    private readonly _number: number;
 
     /**
      * A cache of all conversions to other number systems.
@@ -73,7 +65,7 @@ export class Num {
                     convertedNum += DigitToNumber(decimals[y])/Math.pow(this._base, y+1);
                 }
             }
-            
+
             return new Num({num: convertedNum});
         } else {
             if(typeof(num.num) === "string"){
@@ -84,17 +76,7 @@ export class Num {
                 throw new Error("The input number is not valid. If you are trying to use a non-base 10 number, supply a base field to the options.");
             }
 
-            const split = SplitNumber(num.num);
-
-            for (let digit of split.digits) {
-                this._digits.push(digit);
-            }
-
-            if(split.decimals){
-                for (let decimal of split.decimals) {
-                    this._decimals.push(decimal);
-                }
-            }
+            this._number = num.num;
         }
     }
 
@@ -108,45 +90,33 @@ export class Num {
         if(this._cache.hasOwnProperty(base.toString() + "|" + precision.toString())) return;
 
         if(base === 10){
-            let digitsPart = this._digits.join("");
-            let decimalsPart = this._decimals.join("");
+            let out = this._number.toString();
+            if(out.startsWith("0")) out = out.substring(1);
 
-            if(decimalsPart === "0") decimalsPart = "";
-
-            this._cache[base.toString() + "|" + precision.toString()] = digitsPart + (decimalsPart ? "." : "") + decimalsPart;
+            this._cache[base.toString() + "|" + precision.toString()] = out;
 
             return;
         }
 
-        let digit = parseInt(this._digits.join(""));
+        let digit = this._number;
         const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: string[] = [];
-        let decimals: string[] = [];
 
-        for (let i = digitLog-1; i > -1; i--){
+        for (let i = digitLog-1; i > (-1*precision)-1; i--){
             let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
             digit -= number * Math.pow(this._base, i);
 
             digits.push(NumberToDigit(number));
+
+            if(digit <= 0) break;
         }
 
-        if(this._base !== 10) {
-            let fraction = parseInt(this._decimals.join("")) / Math.pow(10, this._decimals.length);
-
-            decimals.push(...FractionToBase(fraction, this._base, precision));
-        } else {
-            for (let decimal of this._decimals) {
-                decimals.push(decimal);
-            }
-        }
+        if(digits.length > digitLog) digits.splice(digitLog, 0, ".");
 
         let digitsPart = digits.join("");
-        let decimalsPart = decimals.join("");
 
-        if(decimalsPart === "0") decimalsPart = "";
-
-        this._cache[base.toString() + "|" + precision.toString()] = digitsPart + (decimalsPart ? "." : "") + decimalsPart;
+        this._cache[base.toString() + "|" + precision.toString()] = digitsPart;
     }
 
     /**
