@@ -130,7 +130,7 @@ export class Num {
      * Converts a num to another number system in place.
      * @param base {number} - is the base that this Num will be converted to.
      */
-    public ToBase(base: number) : Num {
+    public toBase(base: number) : Num {
         if(this._base === base) return this;
 
         this._base = base;
