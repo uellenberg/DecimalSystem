@@ -65,7 +65,7 @@ export const FractionToBase = (fraction: number, base: number, precision: number
     let tries = 0;
 
     while (fraction && tries < precision) {
-        const num = Math.floor(fraction * Math.pow(base, tries+1)) % base;
+        const num = Math.floor((fraction * Math.pow(base, tries+1)) % base);
         let digit = NumberToDigit(num);
 
         digits.push(digit.number);

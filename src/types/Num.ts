@@ -104,7 +104,7 @@ export class Num {
                     const decimals1 = parsedDigits[i].decimals.toString();
 
                     for (let y = 0; y < decimals1.length; y++) {
-                        convertedNum += DigitToNumber({number: decimals1[y]})/Math.pow(this._base, y+1);
+                        convertedNum += DigitToNumber({number: decimals1[y]})/Math.pow(this._base, y+1)*Math.pow(this._base, parsedDigits.length-i-1);
                     }
                 }
             }
@@ -160,7 +160,7 @@ export class Num {
 
             let str = d.number;
             if(d.decimals) {
-                str = "["+str+"."+FractionToBase(d.decimals, this._base, precision).join("")+"]";
+                str = "["+str+"."+FractionToBase(d.decimals / Math.pow(10, d.decimals.toString().length), this._base, precision).join("")+"]";
             }
 
             digits.push(str);

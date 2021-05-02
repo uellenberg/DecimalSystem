@@ -61,11 +61,11 @@ describe("Num", () => {
             it("should return the correct Num.", () => {
                 const num = new Num(9.5);
                 num.ToBase(2.5);
-                expect(num.toString()).to.eql("1[0.21000011][1.21000011].10210202");
+                expect(num.toString()).to.eql("1[0.10021200][1.10021200].10021200");
 
                 const num2 = new Num(9);
                 num2.ToBase(2.5);
-                expect(num2.toString()).to.eql("1[0.21000011][1.21000011]");
+                expect(num2.toString()).to.eql("1[0.10021200][1.10021200]");
             });
         });
 
@@ -97,15 +97,15 @@ describe("Num", () => {
 
         context("with a base 2.5 number", () => {
             it("should return the correct Num.", () => {
-                const num = new Num({num: "1[0.21000011][1.21000011].10210202", base: 2.5});
+                const num = new Num({num: "1[0.10021200][1.10021200].10021200", base: 2.5});
                 num.ToBase(10);
                 //9.5, some with inaccuracies
-                expect(num.toString()).to.eql("9.73769024");
+                expect(num.toString()).to.eql("9.363343999999998");
 
-                const num2 = new Num({num: "1[0.21000011][1.21000011]", base: 2.5});
+                const num2 = new Num({num: "1[0.10021200][1.10021200]", base: 2.5});
                 num2.ToBase(10);
                 //9, some with inaccuracies
-                expect(num2.toString()).to.eql("9.17458752");
+                expect(num2.toString()).to.eql("8.893711999999999");
             });
         });
     });
