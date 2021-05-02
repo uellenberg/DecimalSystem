@@ -80,6 +80,19 @@ describe("Num", () => {
                 expect(num2.toString()).to.eql("1aca");
             });
         });
+
+        //this is ridiculous
+        context("with number to base 65536", () => {
+            it("should return the correct Num.", () => {
+                const num = new Num(5477458767.436);
+                num.ToBase(65536);
+                expect(num.toString()).to.eql("1䛒掦.濴늄ອї0000");
+
+                const num2 = new Num(5477458767);
+                num2.ToBase(65536);
+                expect(num2.toString()).to.eql("1䛒掦");
+            });
+        });
     });
 
     describe("Constructor (from base)", () => {
@@ -106,6 +119,20 @@ describe("Num", () => {
                 num2.ToBase(10);
                 //9, some with inaccuracies
                 expect(num2.toString()).to.eql("8.893711999999999");
+            });
+        });
+
+        //this is also ridiculous
+        context("with a base 65536", () => {
+            it("should return the correct Num.", () => {
+                const num = new Num({num: "1䛒掦.濴늄ອї0000", base: 65536});
+                num.ToBase(10);
+                //I can't believe this actually worked
+                expect(num.toString()).to.eql("5477458767.436");
+
+                const num2 = new Num({num: "1䛒掦", base: 65536});
+                num2.ToBase(10);
+                expect(num2.toString()).to.eql("5477458767");
             });
         });
     });
