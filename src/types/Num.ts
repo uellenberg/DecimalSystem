@@ -114,7 +114,7 @@ export class Num {
                 digits.push(...toAdd, digitStr);
                 toAdd = [];
             }
-            else toAdd.push(digitStr);
+            else toAdd.push("0");
 
             if(digit <= 0) break;
         }
