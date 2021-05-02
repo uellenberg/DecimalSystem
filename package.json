@@ -1,5 +1,5 @@
 {
-  "name": "NumberSystem",
+  "name": "numbersystem",
   "version": "1.0.0",
   "description": "An experimental library for converting numbers to non-integer bases.",
   "main": "dist/index.js",
@@ -7,12 +7,29 @@
   "scripts": {
     "build": "tsc",
     "test": "nyc --reporter=lcov mocha --slow 0",
-    "coverage": "codecov"
+    "coverage": "codecov",
+    "deploy": "npm publish"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/uellenberg/NumberSystem.git"
   },
+  "keywords": [
+    "number",
+    "system",
+    "systems",
+    "base",
+    "radix",
+    "converter",
+    "convert",
+    "numbers",
+    "int",
+    "integer",
+    "non-int",
+    "non-integer",
+    "numbersystem",
+    "numbersystems"
+  ],
   "author": "Jonah Uellenberg",
   "license": "Apache-2.0",
   "bugs": {
