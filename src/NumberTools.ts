@@ -3,8 +3,6 @@
  * @param num {number} - is the number which will be split.
  * @constructor
  */
-import {Digit} from "./types/Digit";
-
 export const SplitNumber = (num: number) : SplitNumber => {
     const split = num.toString().split(".");
 
@@ -30,13 +28,11 @@ export interface SplitNumber {
  * Converts a digit to a number
  * @param digit {Digit} - the digit being converted.
  */
-export const DigitToNumber = (digit: Digit) : number => {
+export const DigitToNumber = (digit: string) : number => {
     //Essentially, the way this works is that if the number is not an integer, then it is the character code - 87. This is because character code 97 (a) is the first character code for 10.
 
-    let num = parseInt(digit.number);
-    if(isNaN(num)) num = digit.number.charCodeAt(0) - 87;
-
-    if(digit.decimals) num += digit.decimals/Math.pow(10, digit.decimals.toString().length);
+    let num = parseInt(digit);
+    if(isNaN(num)) num = digit.charCodeAt(0) - 87;
 
     return num;
 }
@@ -46,12 +42,12 @@ export const DigitToNumber = (digit: Digit) : number => {
  * @param num {number} - the number that will be changed to a Digit.
  * @constructor
  */
-export const NumberToDigit = (num: number) : Digit => {
+export const NumberToDigit = (num: number) : string => {
     //This is similar to the above, but in reverse.
 
     const split = SplitNumber(num);
 
-    return num < 10 ? {number: split.digits, decimals: split.decimals ? parseInt(split.decimals) : null} : {number: String.fromCharCode(parseInt(split.digits)+87), decimals: split.decimals ? parseInt(split.decimals) : null};
+    return num < 10 ? split.digits : String.fromCharCode(parseInt(split.digits)+87);
 }
 
 /**
@@ -69,8 +65,8 @@ export const FractionToBase = (fraction: number, base: number, precision: number
         const num = Math.floor((fraction * Math.pow(base, tries+1)) % base);
         let digit = NumberToDigit(num);
 
-        if(digit.number !== "0") {
-            digits.push(...toAdd, digit.number);
+        if(digit !== "0") {
+            digits.push(...toAdd, digit);
             toAdd = [];
         } else {
             toAdd.push("0");

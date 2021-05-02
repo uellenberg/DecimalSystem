@@ -1,9 +1,5 @@
-import {Digit} from "./Digit";
 import {DigitToNumber, FractionToBase, NumberToDigit, SplitNumber} from "../NumberTools";
 import {NumOptions} from "./NumOptions";
-import {RecursiveMap, RegexTokenizer, TokenizerChain} from "parselib";
-
-const inputParseChain = new TokenizerChain(new RegexTokenizer(/[\[\]]/g));
 
 /**
  * A class providing information about a number.
@@ -26,14 +22,14 @@ export class Num {
      * For example, in the number `1234.56`, this will contain the digits `1234`.
      * @private
      */
-    private readonly _digits: Digit[] = [];
+    private readonly _digits: string[] = [];
 
     /**
      * The decimal digits of a number.
      * For example, in the number `1234.56`, this will contain the digit `56`.
      * @private
      */
-    private readonly _decimals: Digit[] = [];
+    private readonly _decimals: string[] = [];
 
     /**
      * A cache of all conversions to other number systems.
@@ -61,60 +57,23 @@ export class Num {
 
             this._base = num.base;
 
-            let inputSplit = num.num.split(/\.(?![^[]*?])/g);
+            let inputSplit = num.num.split(/\./g);
 
             const decimals = inputSplit.length > 1 ? inputSplit.pop() : "";
-            const digits = inputSplit.join(".") || "0";
-
-            const tokens = inputParseChain.run(digits);
-            const parsedDigits = RecursiveMap<Digit>(tokens, token => token.isToken && token.value === "[", token => token.isToken && token.value === "]", token => {
-                const digitSplit = token.value.split(".");
-
-                const number = digitSplit.shift() || "0";
-                const decimals = digitSplit.shift();
-
-                if(number.length > 1){
-                    let out: Digit[] = [];
-
-                    for(const digit of number){
-                        out.push({number: digit});
-                    }
-
-                    return out;
-                }
-
-                return {number, decimals};
-            }, tokens => tokens, tokens => {
-                let out: Digit[] = [];
-
-                tokens.forEach(token => {
-                    if(Array.isArray(token)) out.push(...token);
-                    else out.push(token);
-                });
-
-                return out;
-            });
+            const digits = (inputSplit.join(".") || "0").split("");
 
             let convertedNum = 0;
 
-            for (let i = 0; i < parsedDigits.length; i++) {
-                convertedNum += DigitToNumber({number: parsedDigits[i].number}) * Math.pow(this._base, parsedDigits.length-i-1);
-
-                if(parsedDigits[i].decimals){
-                    const decimals1 = parsedDigits[i].decimals.toString();
-
-                    for (let y = 0; y < decimals1.length; y++) {
-                        convertedNum += DigitToNumber({number: decimals1[y]})/Math.pow(this._base, y+1)*Math.pow(this._base, parsedDigits.length-i-1);
-                    }
-                }
+            for (let i = 0; i < digits.length; i++) {
+                convertedNum += DigitToNumber(digits[i]) * Math.pow(this._base, digits.length-i-1);
             }
 
             if(decimals){
                 for (let y = 0; y < decimals.length; y++) {
-                    convertedNum += DigitToNumber({number: decimals[y]})/Math.pow(this._base, y+1);
+                    convertedNum += DigitToNumber(decimals[y])/Math.pow(this._base, y+1);
                 }
             }
-
+            
             return new Num({num: convertedNum});
         } else {
             if(typeof(num.num) === "string"){
@@ -128,12 +87,12 @@ export class Num {
             const split = SplitNumber(num.num);
 
             for (let digit of split.digits) {
-                this._digits.push({number: digit});
+                this._digits.push(digit);
             }
 
             if(split.decimals){
                 for (let decimal of split.decimals) {
-                    this._decimals.push({number: decimal});
+                    this._decimals.push(decimal);
                 }
             }
         }
@@ -148,33 +107,37 @@ export class Num {
     private Convert(base: number, precision: number) : void {
         if(this._cache.hasOwnProperty(base.toString() + "|" + precision.toString())) return;
 
-        const digit = parseInt(this._digits.map(digit => digit.number).join(""));
+        if(base === 10){
+            let digitsPart = this._digits.join("");
+            let decimalsPart = this._decimals.join("");
+
+            if(decimalsPart === "0") decimalsPart = "";
+
+            this._cache[base.toString() + "|" + precision.toString()] = digitsPart + (decimalsPart ? "." : "") + decimalsPart;
+
+            return;
+        }
+
+        let digit = parseInt(this._digits.join(""));
         const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: string[] = [];
         let decimals: string[] = [];
 
-        for (let i = 0; i < digitLog; i++){
-            const number = Math.floor(digit/Math.pow(this._base, i)) % this._base;
-            const d = NumberToDigit(number);
+        for (let i = digitLog-1; i > -1; i--){
+            let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
+            digit -= number * Math.pow(this._base, i);
 
-            let str = d.number;
-            if(d.decimals) {
-                str = "["+(str !== "0" ? str : "")+"."+FractionToBase(d.decimals / Math.pow(10, d.decimals.toString().length), this._base, precision).join("")+"]";
-            }
-
-            digits.push(str);
+            digits.push(NumberToDigit(number));
         }
 
-        digits.reverse();
-
         if(this._base !== 10) {
-            let fraction = parseInt(this._decimals.map(decimal => decimal.number).join("")) / Math.pow(10, this._decimals.length);
+            let fraction = parseInt(this._decimals.join("")) / Math.pow(10, this._decimals.length);
 
             decimals.push(...FractionToBase(fraction, this._base, precision));
         } else {
             for (let decimal of this._decimals) {
-                decimals.push(decimal.number);
+                decimals.push(decimal);
             }
         }
 

@@ -8,20 +8,12 @@ describe("Num", () => {
                 expect(new Num(100.1)).to.eql({
                     _base: 10, _cache: {}, _digits:
                         [
-                            {
-                                number: "1"
-                            },
-                            {
-                                number: "0"
-                            },
-                            {
-                                number: "0"
-                            }
+                            "1",
+                            "0",
+                            "0"
                         ],
                     _decimals: [
-                        {
-                            number: "1"
-                        }
+                        "1"
                     ]
                 });
             });
@@ -39,9 +31,9 @@ describe("Num", () => {
 
         context("with number to base 2.5", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("1[.100212][1.100212].100212");
+                expect(new Num(9.5).ToBase(2.5).toString()).to.eql("110.100212");
 
-                expect(new Num(9).ToBase(2.5).toString()).to.eql("1[.100212][1.100212]");
+                expect(new Num(9).ToBase(2.5).toString()).to.eql("110");
             });
         });
 
@@ -65,9 +57,9 @@ describe("Num", () => {
         //this shouldn't be possible
         context("with number to base 65536.65536", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(5477458767.436).ToBase(65536.65536).toString()).to.eql("1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯].濴ﮪ専祝㋟雏");
+                expect(new Num(5477458767.436).ToBase(65536.65536).toString()).to.eql("1䛐.濴ﮪ専祝㋟雏");
 
-                expect(new Num(5477458767).ToBase(65536.65536).toString()).to.eql("1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯]");
+                expect(new Num(5477458767).ToBase(65536.65536).toString()).to.eql("1䛐");
             });
         });
     });
@@ -84,14 +76,13 @@ describe("Num", () => {
         context("with a base 2.5 number", () => {
             it("should return the correct Num.", () => {
                 //9.5, some with inaccuracies
-                expect(new Num({num: "1[.100212][1.100212].100212", base: 2.5}).ToBase(10).toString()).to.eql("9.363343999999998");
+                expect(new Num({num: "110.100212", base: 2.5}).ToBase(10).toString()).to.eql("9.219631999999999");
 
                 //9, some with inaccuracies
-                expect(new Num({num: "1[.100212][1.100212]", base: 2.5}).ToBase(10).toString()).to.eql("8.893711999999999");
+                expect(new Num({num: "110", base: 2.5}).ToBase(10).toString()).to.eql("8.75");
             });
         });
 
-        //this is ridiculous
         context("with a base 65536", () => {
             it("should return the correct Num.", () => {
                 //I can't believe this actually worked
@@ -102,13 +93,11 @@ describe("Num", () => {
             });
         });
 
-        //this shouldn't be possible
         context("with number to base 65536.65536", () => {
             it("should return the correct Num.", () => {
-                //I am converting a number to base 65536.65536 and back to base 10 losslessly. How the hell?
-                expect(new Num({num: "1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯].濴ﮪ専祝㋟雏", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458767.436");
+                expect(new Num({num: "1䛐.濴ﮪ専祝㋟雏", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458766.561177");
 
-                expect(new Num({num: "1[䛐.墑跢恎␄鏝庯保碷][趰.勀覴靧吧䒿箲뤯]", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458767");
+                expect(new Num({num: "1䛐", base: 65536.65536}).ToBase(10).toString()).to.eql("5477458766.125177");
             });
         });
     });
