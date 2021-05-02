@@ -5,11 +5,7 @@ describe("Num", () => {
     describe("Constructor", () => {
         context("with number test", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(100.1)).to.eql({
-                    _base: 10,
-                    _cache: {},
-                    _number: 100.1
-                });
+                expect(new Num(100.1).toString()).to.eql("100.09999999");
             });
         });
 
