@@ -9,7 +9,11 @@ const inputParseChain = new TokenizerChain(new RegexTokenizer(/[\[\]]/g));
  * A class providing information about a number.
  */
 export class Num {
-    private _base: number;
+    /**
+     * The base that the number is in.
+     * @private
+     */
+    private _base: number = 10;
     /**
      * The base that the number is in.
      */
@@ -17,31 +21,26 @@ export class Num {
         return this._base;
     }
 
-    private _isDecimal: boolean;
-    /**
-     * When a decimal number is converted to a decimal base, it can a digit to become a decimal. Normally a number looks like `1 2 3 4`, but in some cases, it can look like `1.1 2 3 4`. If one of the digits is a decimal, this value is `true`.
-     */
-    public get isDecimal(): boolean {
-        return this._isDecimal;
-    }
-
-    private _digits: Digit[];
     /**
      * The non-decimal digits of a number.
      * For example, in the number `1234.56`, this will contain the digits `1234`.
+     * @private
      */
-    public get digits(): ReadonlyArray<Digit> {
-        return this._digits;
-    }
+    private readonly _digits: Digit[] = [];
 
-    private _decimals: Digit[];
     /**
      * The decimal digits of a number.
      * For example, in the number `1234.56`, this will contain the digit `56`.
+     * @private
      */
-    public get decimals(): ReadonlyArray<Digit> {
-        return this._decimals;
-    }
+    private readonly _decimals: Digit[] = [];
+
+    /**
+     * A cache of all conversions to other number systems.
+     * base|precision: numberStr
+     * @private
+     */
+    private _cache: Record<string, string> = {};
 
     /**
      * Turn a base 10 number into a Num.
@@ -49,12 +48,7 @@ export class Num {
      * @constructor
      */
     public constructor(num: NumOptions | number) {
-        this._base = 10;
-        this._isDecimal = false;
-        this._digits = [];
-        this._decimals = [];
-
-        if(typeof(num) === "number") num = {num};
+        if(typeof(num) === "number" || typeof(num) === "string") num = {num};
 
         if(num.base != null){
             if(typeof(num.num) !== "string"){
@@ -146,79 +140,33 @@ export class Num {
     }
 
     /**
-     * Converts a num to another number system in place.
-     * @param base {number} - is the base that this Num will be converted to.
+     * Converts the num to another number system and places it in the cache.
+     * @param base {number} - is the base being converted to.
+     * @param precision {number} - is the maximum decimal places a decimal should have.
+     * @private
      */
-    public ToBase(base: number) : Num {
-        if(this._base === base) return this;
-
-        //Directly converting from one decimal system to another is hard, so I'm using base 10 as a midpoint between the two.
-        if(this._base !== 10 && base !== 10) this.ToBase(10);
-
-        this._isDecimal = false;
-
-        if(base === 10){
-            let out = 0;
-
-            for (let i = 0; i < this._digits.length; i++){
-                const number = DigitToNumber(this._digits[i]);
-
-                out += number*Math.pow(this._base, this._digits.length-i-1);
-            }
-
-            this._digits = [];
-
-            //If there ends up being decimals here, something really, really bad happened.
-            for(const digit of out.toString()){
-                this._digits.push({number: digit});
-            }
-
-            this._base = base;
-
-            return this;
-        }
-
-        this._base = base;
+    private Convert(base: number, precision: number) : void {
+        if(this._cache.hasOwnProperty(base.toString() + "|" + precision.toString())) return;
 
         const digit = parseInt(this._digits.map(digit => digit.number).join(""));
         const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
-        let digits: Digit[] = [];
+        let digits: string[] = [];
+        let decimals: string[] = [];
 
         for (let i = 0; i < digitLog; i++){
             const number = Math.floor(digit/Math.pow(this._base, i)) % this._base;
             const d = NumberToDigit(number);
 
-            digits.push(d);
-
-            if(d.decimals) this._isDecimal = true;
-        }
-
-        digits.reverse();
-        this._digits = digits;
-
-        return this;
-    }
-
-    /**
-     * Convert this Num to a string. If `isDecimal` is `true`, then each decimal digit will be encased in brackets.
-     * For example, `[1.01] 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
-     *
-     * If `isDecimal` is `false`, then it will be turned into a normal number string.
-     * @param precision {number} - is the maximum decimal places a decimal should have.
-     */
-    public toString(precision: number = 8) : string {
-        let digits: string[] = [];
-        let decimals: string[] = [];
-
-        for (let digit of this._digits) {
-            let str = digit.number;
-            if(digit.decimals) {
-                str = "["+str+"."+FractionToBase(digit.decimals, this._base, precision).join("")+"]";
+            let str = d.number;
+            if(d.decimals) {
+                str = "["+str+"."+FractionToBase(d.decimals, this._base, precision).join("")+"]";
             }
 
             digits.push(str);
         }
+
+        digits.reverse();
 
         if(this._base !== 10) {
             let fraction = parseInt(this._decimals.map(decimal => decimal.number).join("")) / Math.pow(10, this._decimals.length);
@@ -240,6 +188,33 @@ export class Num {
 
         if(decimalsPart === "0") decimalsPart = "";
 
-        return digitsPart+(decimalsPart ? "." : "")+decimalsPart;
+        this._cache[base.toString() + "|" + precision.toString()] = digitsPart + (decimalsPart ? "." : "") + decimalsPart;
+    }
+
+    /**
+     * Converts a num to another number system in place.
+     * @param base {number} - is the base that this Num will be converted to.
+     */
+    public ToBase(base: number) : Num {
+        if(this._base === base) return this;
+
+        this._base = base;
+
+        return this;
+    }
+
+    /**
+     * Convert this Num to a string. If `isDecimal` is `true`, then each decimal digit will be encased in brackets.
+     * For example, `[1.01] 1.1` means `{digits: ["1.01", "1"], decimals: ["1"]}`.
+     *
+     * If `isDecimal` is `false`, then it will be turned into a normal number string.
+     * @param precision {number} - is the maximum decimal places a decimal should have.
+     */
+    public toString(precision: number = 8) : string {
+        if(this._cache.hasOwnProperty(this._base.toString() + "|" + precision.toString())) return this._cache[this._base.toString() + "|" + precision.toString()];
+
+        this.Convert(this._base, precision);
+
+        return this._cache[this._base.toString() + "|" + precision.toString()];
     }
 }

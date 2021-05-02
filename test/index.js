@@ -6,7 +6,7 @@ describe("Num", () => {
         context("with number test", () => {
             it("should return the correct Num.", () => {
                 expect(new Num(100.1)).to.eql({
-                    _base: 10, _isDecimal: false, _digits:
+                    _base: 10, _cache: {}, _digits:
                         [
                             {
                                 number: "1"
