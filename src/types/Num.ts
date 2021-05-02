@@ -64,13 +64,13 @@ export class Num {
             let inputSplit = num.num.split(/\.(?![^[]*?])/g);
 
             const decimals = inputSplit.length > 1 ? inputSplit.pop() : "";
-            const digits = inputSplit.join(".");
+            const digits = inputSplit.join(".") || "0";
 
             const tokens = inputParseChain.run(digits);
             const parsedDigits = RecursiveMap<Digit>(tokens, token => token.isToken && token.value === "[", token => token.isToken && token.value === "]", token => {
                 const digitSplit = token.value.split(".");
 
-                const number = digitSplit.shift();
+                const number = digitSplit.shift() || "0";
                 const decimals = digitSplit.shift();
 
                 if(number.length > 1){
@@ -160,7 +160,7 @@ export class Num {
 
             let str = d.number;
             if(d.decimals) {
-                str = "["+str+"."+FractionToBase(d.decimals / Math.pow(10, d.decimals.toString().length), this._base, precision).join("")+"]";
+                str = "["+(str !== "0" ? str : "")+"."+FractionToBase(d.decimals / Math.pow(10, d.decimals.toString().length), this._base, precision).join("")+"]";
             }
 
             digits.push(str);
