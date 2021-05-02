@@ -174,12 +174,7 @@ export class Num {
             decimals.push(...FractionToBase(fraction, this._base, precision));
         } else {
             for (let decimal of this._decimals) {
-                let str = decimal.number;
-                if(decimal.decimals) {
-                    str = "["+str+"."+FractionToBase(decimal.decimals, this._base, precision).join("")+"]";
-                }
-
-                decimals.push(str);
+                decimals.push(decimal.number);
             }
         }
 
