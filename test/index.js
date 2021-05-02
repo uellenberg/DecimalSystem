@@ -12,6 +12,14 @@ describe("Num", () => {
                 });
             });
         });
+
+        context("with numbers of the wrong type", () => {
+            it("should be parsed correctly.", () => {
+                expect(new Num("11").toString()).to.eql("11");
+
+                expect(new Num({num: 11, base: 10}).toString()).to.eql("11");
+            });
+        });
     });
 
     describe("ToBase", () => {
@@ -94,6 +102,20 @@ describe("Num", () => {
                 expect(new Num({num: "1䛐.俩䑼彼㜓甐뀸﷨", base: 65536.65536}).toBase(10).toString()).to.eql("5477458767.436");
 
                 expect(new Num({num: "1䛐.ḑﵙ﹃믗", base: 65536.65536}).toBase(10).toString()).to.eql("5477458767");
+            });
+        });
+    });
+
+    describe("Invalid input", () => {
+        context("Invalid number in constructor", () => {
+            it("should throw an error.", () => {
+                expect(() => new Num("number")).to.throw("The input number is not valid. If you are trying to use a non-base 10 number, supply a base field to the options.");
+            });
+        });
+
+        context("Invalid base in constructor", () => {
+            it("should throw an error", () => {
+                expect(() => new Num({num: 10, base: "base"})).to.throw("The base field is not a valid number.");
             });
         });
     });
