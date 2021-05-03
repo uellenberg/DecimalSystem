@@ -1,5 +1,5 @@
-import {DigitToNumber, NumberToDigit} from "../NumberTools";
-import {NumOptions} from "./NumOptions";
+import {DigitToNumber, NumberToDigit} from "./NumberTools";
+import {NumOptions} from "./types/NumOptions";
 
 /**
  * A class providing information about a number.

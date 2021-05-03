@@ -1,2 +1,2 @@
-export {Num} from "./types/Num";
+export {Num} from "./Num";
 export {NumOptions} from "./types/NumOptions";
