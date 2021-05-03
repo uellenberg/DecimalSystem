@@ -5,7 +5,7 @@ describe("Num", () => {
     describe("Constructor", () => {
         context("with number test", () => {
             it("should return the correct Num.", () => {
-                expect(new Num(100.1).toNumber()).is.approximately(100.09999999, .01);
+                expect(new Num(100.1).toNumber()).is.approximately(100.1, .01);
             });
         });
 

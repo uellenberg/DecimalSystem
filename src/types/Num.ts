@@ -1,15 +1,21 @@
 import {DigitToNumber, NumberToDigit} from "../NumberTools";
-import {BaseFunction, NumOptions} from "./NumOptions";
+import {NumOptions} from "./NumOptions";
 
 /**
  * A class providing information about a number.
  */
 export class Num {
     /**
-     * The base function used to find the weight of each number place.
+     * The base that the number is in.
      * @private
      */
-    private _base: BaseFunction = (pos) => Math.pow(10, pos);
+    private _base: number = 10;
+    /**
+     * The base that the number is in.
+     */
+    public get base(): number {
+        return this._base;
+    }
 
     /**
      * The number that this Num is using.
@@ -30,21 +36,20 @@ export class Num {
      * @constructor
      */
     public constructor(num: NumOptions | number) {
-        const options = (typeof(num) === "number" || typeof(num) === "string") ? {num} : num;
+        if(typeof(num) === "number" || typeof(num) === "string") num = {num};
 
-        if(options.base != null){
-            if(typeof(options.num) !== "string"){
-                options.num = options.num.toString().trim().toLowerCase();
+        if(num.base != null){
+            if(typeof(num.num) !== "string"){
+                num.num = num.num.toString().trim().toLowerCase();
             }
 
-            //If the base is an invalid number.
-            if(typeof(options.base) !== "function" && isNaN(options.base)){
+            if(isNaN(num.base)){
                 throw new Error("The base field is not a valid number.");
             }
 
-            this._base = typeof(options.base) === "number" ? ((pos) => pos === 1 ? <number>options.base : Math.pow(<number>options.base, pos)) : options.base;
+            this._base = num.base;
 
-            let inputSplit = options.num.split(/\./g);
+            let inputSplit = num.num.split(/\./g);
 
             const decimals = inputSplit.length > 1 ? inputSplit.pop() : "";
             const digits = (inputSplit.join(".") || "0").split("");
@@ -52,26 +57,26 @@ export class Num {
             let convertedNum = 0;
 
             for (let i = 0; i < digits.length; i++) {
-                convertedNum += DigitToNumber(digits[i]) * this._base(digits.length-i-1);
+                convertedNum += DigitToNumber(digits[i]) * Math.pow(this._base, digits.length-i-1);
             }
 
             if(decimals){
                 for (let y = 0; y < decimals.length; y++) {
-                    convertedNum += DigitToNumber(decimals[y])/this._base(y+1);
+                    convertedNum += DigitToNumber(decimals[y])/Math.pow(this._base, y+1);
                 }
             }
 
             return new Num({num: convertedNum});
         } else {
-            if(typeof(options.num) === "string"){
-                options.num = parseInt(options.num.trim().toLowerCase());
+            if(typeof(num.num) === "string"){
+                num.num = parseInt(num.num.trim().toLowerCase());
             }
 
-            if(isNaN(options.num)){
+            if(isNaN(num.num)){
                 throw new Error("The input number is not valid. If you are trying to use a non-base 10 number, supply a base field to the options.");
             }
 
-            this._number = options.num;
+            this._number = num.num;
         }
     }
 
@@ -81,10 +86,10 @@ export class Num {
      * @param precision {number} - is the maximum decimal places a decimal should have.
      * @private
      */
-    private Convert(base: BaseFunction, precision: number) : void {
+    private Convert(base: number, precision: number) : void {
         if(this._cache.hasOwnProperty(base.toString() + "|" + precision.toString())) return;
 
-        if(base.toString() === "(pos) => pos === 1 ? base : Math.pow(base, pos)" && base(1) === 10){
+        if(base === 10){
             let out = this._number.toString();
             if(out.startsWith("0")) out = out.substring(1);
 
@@ -94,14 +99,14 @@ export class Num {
         }
 
         let digit = this._number;
-        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base(1))) + (digit % this._base(1) === 0 ? 1 : 0);
+        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: string[] = [];
         let toAdd: string[] = [];
 
         for (let i = digitLog-1; i > (-1*precision)-1; i--){
-            let number = Math.floor((digit / this._base(i)) % this._base(1));
-            digit -= number * this._base(i);
+            let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
+            digit -= number * Math.pow(this._base, i);
 
             const digitStr = NumberToDigit(number);
 
@@ -116,19 +121,19 @@ export class Num {
 
         if(digits.length > digitLog) digits.splice(digitLog, 0, ".");
 
-        this._cache[base.toString() + "|" + precision.toString()] = digits.join("");
+        let digitsPart = digits.join("");
+
+        this._cache[base.toString() + "|" + precision.toString()] = digitsPart;
     }
 
     /**
      * Converts a num to another number system in place.
-     * @param base {number | BaseFunction} - is the base that this Num will be converted to.
+     * @param base {number} - is the base that this Num will be converted to.
      */
-    public toBase(base: number | BaseFunction) : Num {
-        const baseFunc = typeof(base) === "number" ? ((pos) => pos === 1 ? <number>base : Math.pow(<number>base, pos)) : base;
+    public toBase(base: number) : Num {
+        if(this._base === base) return this;
 
-        if(this._base.toString() === baseFunc.toString()) return this;
-
-        this._base = baseFunc;
+        this._base = base;
 
         return this;
     }

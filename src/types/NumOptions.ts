@@ -9,11 +9,5 @@ export interface NumOptions {
     /**
      * The base that the number is in.
      */
-    base?: number | BaseFunction;
+    base?: number;
 }
-
-/**
- * A function that can be used in place of a base number to generate the weight of each place.
- * By default, this is `(pos) => Math.pow(base, pos)`.
- */
-export type BaseFunction = (pos) => number;
