@@ -16,4 +16,4 @@ export interface NumOptions {
  * A function that can be used in place of a base number to generate the weight of each place.
  * By default, this is `(pos) => Math.pow(base, pos)`.
  */
-export type BaseFunction = (number) => number;
+export type BaseFunction = (pos) => number;
