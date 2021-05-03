@@ -147,4 +147,12 @@ export class Num {
 
         return this._cache[this._base.toString() + "|" + precision.toString()];
     }
+
+    /**
+     * Converts the result of toString to a number.
+     * @param precision {number} - is the maximum decimal places a decimal should have.
+     */
+    public toNumber(precision: number = 8) : number {
+        return parseFloat(this.toString(precision));
+    }
 }
