@@ -131,7 +131,7 @@ export class Num {
         by the digits so far), then the loop is stopped early.
          */
         let digit = this._number;
-        const digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
+        let digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
 
         let digits: string[] = [];
         let toAdd: string[] = [];
@@ -142,7 +142,11 @@ export class Num {
 
             const digitStr = NumberToDigit(number);
 
-            if(digitStr === "0" && digits.length < 1) continue;
+            if(digitStr === "0" && digits.length < 1) {
+                //This is just to make sure the decimal symbol is placed in the correct location.
+                digitLog--;
+                continue;
+            }
 
             if(digitStr !== "0") {
                 digits.push(...toAdd, digitStr);
