@@ -136,7 +136,7 @@ export class Num {
         let digits: string[] = [];
         let toAdd: string[] = [];
 
-        for (let i = digitLog-1; i > (-1*precision)-1; i--){
+        for (let i = digitLog-1; i > (-1*precision)-2; i--){
             let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
             digit -= number * Math.pow(this._base, i);
 
@@ -156,6 +156,9 @@ export class Num {
 
             if(digit <= 0) break;
         }
+
+        //Because the number can be terminated early, some of the zeros may not be added. To solve this, we need to pad the number with zeros.
+        if(digits.length < digitLog) digits.push(..."0".repeat(digitLog-digits.length).split(""))
 
         //Now, our output contains all of the digits but no way to distinguish between digits of the decimal and non-decimal part.
         //To solve this, we use our number length to place a decimal point where it is meant to go.
