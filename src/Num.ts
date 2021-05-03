@@ -148,7 +148,7 @@ export class Num {
                 continue;
             }
 
-            if(digitStr !== "0") {
+            if(digitStr !== "0" || digits.length < digitLog) {
                 digits.push(...toAdd, digitStr);
                 toAdd = [];
             }
