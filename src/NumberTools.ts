@@ -17,5 +17,6 @@ export const DigitToNumber = (digit: string) : number => {
  * @constructor
  */
 export const NumberToDigit = (num: number) : string => {
+    //This is the opposite of the above function. If the number > 9, then it is encoded as a character, starting at 97 for 10.
     return num < 10 ? num.toString() : String.fromCharCode(num+87);
 }
