@@ -107,6 +107,8 @@ export class Num {
         //Because our number already is in base 10, converting it would cause issues. Instead, we can simply output the actual number.
         if(base === 10){
             let out = this._number.toString();
+
+            //This removes the 0 from numbers like 0.1, so they become just .1.
             if(out.startsWith("0")) out = out.substring(1);
 
             this._cache[base.toString() + "|" + precision.toString()] = out;
@@ -136,7 +138,7 @@ export class Num {
         let digits: string[] = [];
         let toAdd: string[] = [];
 
-        for (let i = digitLog-1; i > (-1*precision)-2; i--){
+        for (let i = digitLog-1; i > (-1*precision)-1; i--){
             let number = Math.floor((digit / Math.pow(this._base, i)) % this._base);
             digit -= number * Math.pow(this._base, i);
 

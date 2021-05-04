@@ -64,7 +64,7 @@ describe("Num", () => {
         context("with a number that normally causes a leading zero", () => {
             it("should not have a leading zero.", () => {
                 //Normally, this will output 0102.201220211.
-                expect(new Num(4 * Math.PI).toBase(Math.PI).toString()).to.eql("102.201220211");
+                expect(new Num(4 * Math.PI).toBase(Math.PI).toString()).to.eql("102.20122021");
             });
         });
     });
