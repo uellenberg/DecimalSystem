@@ -1,11 +1,11 @@
 .idea
-dist
 node_modules
 .gitignore
 .npmignore
 package-lock.json
 yarn.lock
 tsconfig.json
+tsconfig.browser.json
 .nycrc
 coverage
 .github
