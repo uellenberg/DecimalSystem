@@ -5,7 +5,7 @@
 export const DigitToNumber = (digit: string) : number => {
     //Essentially, the way this works is that if the number is not an integer, then it is the character code - 87. This is because character code 97 (a) is the first character code for 10.
 
-    let num = parseInt(digit);
+    let num = parseInt(digit, 10);
     if(isNaN(num)) num = digit.charCodeAt(0) - 87;
 
     return num;

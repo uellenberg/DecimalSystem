@@ -80,7 +80,7 @@ export class Num {
         } else {
             //Because only base 10 numbers can be here, we can safely turn them into numbers if they are strings.
             if(typeof(num.num) === "string"){
-                num.num = parseInt(num.num.trim().toLowerCase());
+                num.num = parseInt(num.num.trim().toLowerCase(), 10);
             }
 
             //A quick check to make sure the number is valid.
