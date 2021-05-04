@@ -1,6 +1,6 @@
 {
   "name": "decimalsystem",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A library for converting numbers to any non-integer/decimal (or just integer) base.",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
