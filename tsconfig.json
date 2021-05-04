@@ -4,7 +4,7 @@
     "module": "commonjs",
     "noImplicitReturns": true,
     "esModuleInterop": true,
-    "outDir": "dist",
+    "outDir": "dist/cjs",
     "rootDir": "src",
     "sourceMap": true,
     "target": "es6",
