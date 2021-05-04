@@ -1,4 +1,4 @@
-# DecimalSystem
+<h1 align="center">Decimal System</h1>
 <p align="center">
     <a href="https://www.codefactor.io/repository/github/uellenberg/decimalsystem">
         <img src="https://www.codefactor.io/repository/github/uellenberg/decimalsystem/badge" alt="CodeFactor">
