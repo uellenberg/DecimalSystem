@@ -5,7 +5,7 @@
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "outDir": "dist.browser",
-	"rootDir": "src",
+    "rootDir": "src",
     "sourceMap": true,
     "target": "es5",
     "declaration": true

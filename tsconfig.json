@@ -5,7 +5,7 @@
     "noImplicitReturns": true,
     "esModuleInterop": true,
     "outDir": "dist",
-	"rootDir": "src",
+    "rootDir": "src",
     "sourceMap": true,
     "target": "es6",
     "declaration": true
