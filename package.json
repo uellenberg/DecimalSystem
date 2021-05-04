@@ -1,7 +1,7 @@
 {
   "name": "decimalsystem",
   "version": "1.0.6",
-  "description": "An experimental library for converting numbers to non-integer (decimal) bases.",
+  "description": "An experimental library for converting numbers to any non-integer/decimal (or just integer) base.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -29,6 +29,11 @@
     "non-integer",
 	"decimal",
 	"dec",
+    "hex",
+    "bin",
+    "oct",
+    "any",
+    "base converter",
     "decimalsystem",
     "decimalsystems"
   ],
