@@ -1,4 +1,10 @@
 # DecimalSystem
+<p align="center">
+    [![CodeFactor](https://www.codefactor.io/repository/github/uellenberg/decimalsystem/badge)](https://www.codefactor.io/repository/github/uellenberg/decimalsystem)
+    [![codecov](https://codecov.io/gh/uellenberg/DecimalSystem/branch/master/graph/badge.svg?token=4XYK0SCZ9S)](https://codecov.io/gh/uellenberg/DecimalSystem)
+    ![Build](https://img.shields.io/github/workflow/status/uellenberg/DecimalSystem/Build%20and%20Test/master)
+    ![Downloads](https://img.shields.io/npm/dt/decimalsystem)
+</p>
 An experimental library to convert numbers to different number systems, especially non-integer ones. What this means is up for you to decide, but certain number systems (like base PI) can be pretty interesting to use with circles.
 
 ## How?
