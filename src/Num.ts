@@ -18,10 +18,16 @@ export class Num {
     }
 
     /**
-     * The base 10 number that this Num is using.
+     * The base 10 number that this Num is using. This number is always positive, regardless of input.
      * @private
      */
     private readonly _number: number;
+
+    /**
+     * If the number is negative.
+     * @private
+     */
+    private readonly _isNegative: boolean = false;
 
     /**
      * A cache of all conversions to other number systems.
@@ -54,6 +60,12 @@ export class Num {
 
             //The current base is stored.
             this._base = num.base;
+
+            //A quick negative number check.
+            if(num.num.startsWith("-")){
+                num.num = num.num.substring(1);
+                this._isNegative = true;
+            }
 
             //The length of the actual digits is needed to figure out what exponent should be used.
             let inputSplit = num.num.split(/\./g);
@@ -88,6 +100,12 @@ export class Num {
                 throw new Error("The input number is not valid. If you are trying to use a non-base 10 number, supply a base field to the options.");
             }
 
+            //Check if the number is negative.
+            if(num.num < 0){
+                num.num *= -1;
+                this._isNegative = true;
+            }
+
             //Store the number.
             this._number = num.num;
         }
@@ -111,7 +129,7 @@ export class Num {
             //This removes the 0 from numbers like 0.1, so they become just .1.
             if(out.startsWith("0")) out = out.substring(1);
 
-            this._cache[base.toString() + "|" + precision.toString()] = out;
+            this._cache[base.toString() + "|" + precision.toString()] = (this._isNegative ? "-" : "") + out;
 
             return;
         }
@@ -167,7 +185,7 @@ export class Num {
         if(digits.length > digitLog) digits.splice(digitLog, 0, ".");
 
         //Now, we put together our new number and put it into the cache.
-        this._cache[base.toString() + "|" + precision.toString()] = digits.join("");
+        this._cache[base.toString() + "|" + precision.toString()] = (this._isNegative ? "-" : "") + digits.join("");
     }
 
     /**

@@ -1,8 +1,6 @@
 const {Num} = require("../dist/cjs/index");
 const {expect} = require("chai");
 
-console.log(new Num(4.718281828459045).toBase(Math.E).toString())
-
 describe("Num", () => {
     describe("Constructor", () => {
         context("with number test", () => {
@@ -26,6 +24,8 @@ describe("Num", () => {
                 expect(new Num(9.5).toBase(2).toNumber()).is.approximately(1001.1, .01);
 
                 expect(new Num(9).toBase(2).toNumber()).is.approximately(1001, .01);
+
+                expect(new Num(-9).toBase(2).toNumber()).is.approximately(-1001, .01);
             });
         });
 
@@ -34,6 +34,8 @@ describe("Num", () => {
                 expect(new Num(9.5).toBase(2.5).toNumber()).is.approximately(110.120101, .01);
 
                 expect(new Num(9).toBase(2.5).toNumber()).is.approximately(110.0111, .01);
+
+                expect(new Num(-9).toBase(2.5).toNumber()).is.approximately(-110.0111, .01);
             });
         });
 
@@ -42,6 +44,8 @@ describe("Num", () => {
                 expect(new Num(6858.9).toBase(16).toString().substring(0, 7)).to.eql("1aca.e6");
 
                 expect(new Num(6858).toBase(16).toString()).to.eql("1aca");
+
+                expect(new Num(-6858).toBase(16).toString()).to.eql("-1aca");
             });
         });
 
@@ -51,6 +55,8 @@ describe("Num", () => {
                 expect(new Num(5477458767.436).toBase(65536).toString()).to.eql("1䛒掦.濴끗");
 
                 expect(new Num(5477458767).toBase(65536).toString()).to.eql("1䛒掦");
+
+                expect(new Num(-5477458767).toBase(65536).toString()).to.eql("-1䛒掦");
             });
         });
 
@@ -60,6 +66,8 @@ describe("Num", () => {
                 expect(new Num(5477458767.436).toBase(65536.65536).toString().substring(0, 8)).to.eql("1䛐.俩䑼彼");
 
                 expect(new Num(5477458767).toBase(65536.65536).toString().substring(0, 8)).to.eql("1䛐.ḑ");
+
+                expect(new Num(-5477458767).toBase(65536.65536).toString().substring(0, 9)).to.eql("-1䛐.ḑ");
             });
         });
 
@@ -98,6 +106,8 @@ describe("Num", () => {
                 expect(new Num({num: "1aca.e6666666", base: 16}).toBase(10).toNumber()).is.approximately(6858.89, .01);
 
                 expect(new Num({num: "1aca", base: 16}).toBase(10).toNumber()).is.approximately(6858, .01);
+
+                expect(new Num({num: "-1aca", base: 16}).toBase(10).toNumber()).is.approximately(-6858, .01);
             });
         });
 
@@ -108,6 +118,9 @@ describe("Num", () => {
 
                 //9, some with inaccuracies
                 expect(new Num({num: "110.01110000", base: 2.5}).toBase(10).toNumber()).is.approximately(8.9996, .01);
+
+                //-9, some with inaccuracies
+                expect(new Num({num: "-110.01110000", base: 2.5}).toBase(10).toNumber()).is.approximately(-8.9996, .01);
             });
         });
 
@@ -118,6 +131,8 @@ describe("Num", () => {
                 expect(new Num({num: "1䛒掦.濴끗", base: 65536}).toBase(10).toNumber()).is.approximately(5477458767.436, .01);
 
                 expect(new Num({num: "1䛒掦", base: 65536}).toBase(10).toNumber()).is.approximately(5477458767, .01);
+
+                expect(new Num({num: "-1䛒掦", base: 65536}).toBase(10).toNumber()).is.approximately(-5477458767, .01);
             });
         });
 
@@ -128,6 +143,8 @@ describe("Num", () => {
                 expect(new Num({num: "1䛐.俩䑼彼㜓甐뀸﷨", base: 65536.65536}).toBase(10).toNumber()).is.approximately(5477458767.436, .01);
 
                 expect(new Num({num: "1䛐.ḑﵙ﹃믗", base: 65536.65536}).toBase(10).toNumber()).is.approximately(5477458767, .01);
+
+                expect(new Num({num: "-1䛐.ḑﵙ﹃믗", base: 65536.65536}).toBase(10).toNumber()).is.approximately(-5477458767, .01);
             });
         });
     });
