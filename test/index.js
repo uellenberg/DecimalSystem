@@ -1,4 +1,4 @@
-const {Num} = require("../dist/index");
+const {Num} = require("../dist/cjs/index");
 const {expect} = require("chai");
 
 console.log(new Num(4.718281828459045).toBase(Math.E).toString())
