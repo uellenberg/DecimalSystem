@@ -13,7 +13,7 @@
     "node_modules/**",
     "**/*.d.ts",
     "**/*.test.ts",
-	"dist/esm/**"
+    "dist/esm/**"
   ],
   "sourceMap": true,
   "reporter": [
