@@ -26,6 +26,8 @@ describe("Num", () => {
                 expect(new Num(9).toBase(2).toNumber()).is.approximately(1001, .01);
 
                 expect(new Num(-9).toBase(2).toNumber()).is.approximately(-1001, .01);
+
+                expect(new Num(.5).toBase(2).toNumber()).is.approximately(.1, .01);
             });
         });
 
@@ -36,6 +38,8 @@ describe("Num", () => {
                 expect(new Num(9).toBase(2.5).toNumber()).is.approximately(110.0111, .01);
 
                 expect(new Num(-9).toBase(2.5).toNumber()).is.approximately(-110.0111, .01);
+
+                expect(new Num(.5).toBase(2.5).toNumber()).is.approximately(.10111, .00001);
             });
         });
 
@@ -46,6 +50,8 @@ describe("Num", () => {
                 expect(new Num(6858).toBase(16).toString()).to.eql("1aca");
 
                 expect(new Num(-6858).toBase(16).toString()).to.eql("-1aca");
+
+                expect(new Num(.5).toBase(16).toNumber()).is.approximately(.8, .01);
             });
         });
 
@@ -108,6 +114,8 @@ describe("Num", () => {
                 expect(new Num({num: "1aca", base: 16}).toBase(10).toNumber()).is.approximately(6858, .01);
 
                 expect(new Num({num: "-1aca", base: 16}).toBase(10).toNumber()).is.approximately(-6858, .01);
+
+                expect(new Num({num: ".8", base: 16}).toBase(10).toNumber()).is.approximately(.5, .01);
             });
         });
 
@@ -121,6 +129,8 @@ describe("Num", () => {
 
                 //-9, some with inaccuracies
                 expect(new Num({num: "-110.01110000", base: 2.5}).toBase(10).toNumber()).is.approximately(-8.9996, .01);
+
+                expect(new Num({num: ".10111", base: 2.5}).toBase(10).toNumber()).is.approximately(.5, .01);
             });
         });
 

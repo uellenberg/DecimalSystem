@@ -41,7 +41,7 @@ export class Num {
      * @param num {number} - is the number which will be used.
      * @constructor
      */
-    public constructor(num: NumOptions | number) {
+    public constructor(num: NumOptions | number | string) {
         //To make things easier, any number/string input is just placed inside of NumOptions.
         if(typeof(num) === "number" || typeof(num) === "string") num = {num};
 
@@ -152,6 +152,9 @@ export class Num {
          */
         let digit = this._number;
         let digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
+
+        //If a number is less than one, it'll have zero digits, but the above code will output negative digits. This corrects it.
+        if(digitLog < 0) digitLog = 0;
 
         let digits: string[] = [];
         let toAdd: string[] = [];
