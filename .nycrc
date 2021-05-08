@@ -13,7 +13,8 @@
     "node_modules/**",
     "**/*.d.ts",
     "**/*.test.ts",
-    "dist/esm/**"
+    "dist/esm/**",
+    "dist/decimalsystem.min.js"
   ],
   "sourceMap": true,
   "reporter": [
