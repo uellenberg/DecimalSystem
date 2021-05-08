@@ -6,6 +6,7 @@
     <a href="https://codecov.io/gh/uellenberg/DecimalSystem">
         <img src="https://codecov.io/gh/uellenberg/DecimalSystem/branch/master/graph/badge.svg?token=4XYK0SCZ9S" alt="Codecov">
     </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fuellenberg%2FDecimalSystem?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fuellenberg%2FDecimalSystem.svg?type=shield"/></a>
     <img src="https://img.shields.io/github/workflow/status/uellenberg/DecimalSystem/Build%20and%20Test/master" alt="Build">
     <img src="https://img.shields.io/npm/dt/decimalsystem" alt="Downloads">
 </p>
@@ -39,3 +40,6 @@ While currently not supported, special notation will be used for negative number
 
 ## Acknowledgments
 https://chridd.nfshost.com/convert/original was extremely helpful towards removing decimals from digits ([7ed5bcb](https://github.com/uellenberg/DecimalSystem/commit/7ed5bcbeb2f97a75dabac5d06fccd1abf3d1c6fe)) as it provided examples of small numbers in non-integer bases which were used to modify the algorithm for converting to non-integer bases to increase precision and remove decimals from digits.
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fuellenberg%2FDecimalSystem.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fuellenberg%2FDecimalSystem?ref=badge_large)
