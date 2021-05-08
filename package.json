@@ -64,6 +64,9 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {},
+  "engines": {
+    "node": ">=0.14"
+  },
   "files": [
     "dist",
     "README.md",
