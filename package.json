@@ -1,7 +1,7 @@
 {
   "name": "decimalsystem",
   "version": "1.0.10",
-  "description": "A library for converting numbers to any non-integer/decimal (or just integer) base.",
+  "description": "DecimalSystem is a powerful base conversion library that can convert any (real) number to any base (over 1), including non-integer bases like base PI.",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
   "module": "dist/esm/index.js",
@@ -22,9 +22,11 @@
     "system",
     "systems",
     "base",
+    "bases",
     "radix",
     "converter",
     "convert",
+    "conversion",
     "numbers",
     "int",
     "integer",
@@ -37,15 +39,19 @@
     "oct",
     "any",
     "base converter",
+    "base conversion",
     "decimalsystem",
-    "decimalsystems"
+    "decimalsystems",
+    "pi",
+    "any",
+    "library"
   ],
   "author": "Jonah Uellenberg",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/uellenberg/DecimalSystem/issues"
   },
-  "homepage": "https://github.com/uellenberg/DecimalSystem#readme",
+  "homepage": "https://decimalsystem.js.org",
   "devDependencies": {
     "@types/node": "^15.0.1",
     "chai": "^4.3.4",

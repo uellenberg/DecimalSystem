@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/github/workflow/status/uellenberg/DecimalSystem/Build%20and%20Test/master" alt="Build">
     <img src="https://img.shields.io/npm/dt/decimalsystem" alt="Downloads">
 </p>
-A library for converting numbers to any non-integer/decimal (or just integer) base. What this means is up for you to decide, but certain number systems (like base PI) can be pretty interesting to use with circles.
+DecimalSystem is a powerful base conversion library that can convert any (real) number to any base (over 1), including non-integer bases like base PI.
 
 ## How?
 Using the library is simple. For example, to convert a number to base sqrt(2) is simple:
