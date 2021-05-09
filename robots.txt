@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://decimalsystem.js.org/sitemap.xml
