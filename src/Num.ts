@@ -151,7 +151,7 @@ export class Num {
         by the digits so far), then the loop is stopped early.
          */
         let digit = this._number;
-        let digitLog = Math.ceil(Math.log(digit)/Math.log(this._base)) + (digit % this._base === 0 ? 1 : 0);
+        let digitLog = Math.floor(Math.log(digit)/Math.log(this._base)) + 1;
 
         //If a number is less than one, it'll have zero digits, but the above code will output negative digits. This corrects it.
         if(digitLog < 0) digitLog = 0;
