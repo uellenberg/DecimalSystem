@@ -14,7 +14,8 @@
     "**/*.d.ts",
     "**/*.test.ts",
     "dist/esm/**",
-    "dist/decimalsystem.min.js"
+    "dist/decimalsystem.min.js",
+	"webpack.config.js"
   ],
   "sourceMap": true,
   "reporter": [
