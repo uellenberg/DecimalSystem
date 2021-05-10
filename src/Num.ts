@@ -140,15 +140,15 @@ export class Num {
         Below, `number` is used to refer to the base 10 number that is being converted to another base.
 
         Essentially, the way this algorithm works is it first calculates the amount of digits that appear in the
-        final number with `ceil(log_base(digit))` (the addition after it fixes a special case, but isn't important
-        for the most part). Then, starting with the first digit in the output and moving backwards, to a maximum
-        of the above function + precision, digits are calculated by finding the maximum digit that can be in that
-        place without exceeding the number (`floor((digit / base^i) % base)`, where `i` is the 1-based position of
-        the digit being calculated. Once this is done, the digit is turned into a base 10 number (`number * base^i`)
-        and subtracted from the number. Then, the non-base 10 version of the digit is turned into its correct symbol
-        if it is over 9, then a few checks are performed to prevent leading or trailing zeros, and it is added to the
-        digits array. Finally, if the number is less than or equal to zero (if the number has been fully represented
-        by the digits so far), then the loop is stopped early.
+        final number with `floor(log_base(digit)) + 1` (the addition and floor are because logs are zero-based,
+        and our length is one-based). Then, starting with the first digit in the output and moving backwards,
+        to a maximum of the above function + precision, digits are calculated by finding the maximum digit that
+        can be in that place without exceeding the number (`floor((digit / base^i) % base)`, where `i` is the 1-based
+        position of the digit being calculated. Once this is done, the digit is turned into a base 10 number
+        (`number * base^i`) and subtracted from the number. Then, the non-base 10 version of the digit is turned into
+        its correct symbol if it is over 9, then a few checks are performed to prevent leading or trailing zeros, and
+        it is added to the digits array. Finally, if the number is less than or equal to zero (if the number has been
+        fully represented by the digits so far), then the loop is stopped early.
          */
         let digit = this._number;
         let digitLog = Math.floor(Math.log(digit)/Math.log(this._base)) + 1;
