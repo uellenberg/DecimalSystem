@@ -181,7 +181,7 @@ export class Num {
         }
 
         //Because the number can be terminated early, some of the zeros may not be added. To solve this, we need to pad the number with zeros.
-        if(digits.length < digitLog) digits.push(..."0".repeat(digitLog-digits.length).split(""))
+        if(digits.length < digitLog) digits.push(..."0".repeat(digitLog-digits.length).split(""));
 
         //Now, our output contains all of the digits but no way to distinguish between digits of the decimal and non-decimal part.
         //To solve this, we use our number length to place a decimal point where it is meant to go.
