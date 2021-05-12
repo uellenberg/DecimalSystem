@@ -165,12 +165,6 @@ export class Num {
 
             const digitStr = NumberToDigit(number);
 
-            if(digitStr === "0" && digits.length < 1) {
-                //This is just to make sure the decimal symbol is placed in the correct location.
-                digitLog--;
-                continue;
-            }
-
             if(digitStr !== "0" || digits.length < digitLog) {
                 digits.push(...toAdd, digitStr);
                 toAdd = [];
@@ -188,7 +182,8 @@ export class Num {
         if(digits.length > digitLog) digits.splice(digitLog, 0, ".");
 
         //Now, we put together our new number and put it into the cache.
-        this._cache[base.toString() + "|" + precision.toString()] = (this._isNegative ? "-" : "") + digits.join("");
+        const output = digits.join("") || "0";
+        this._cache[base.toString() + "|" + precision.toString()] = (this._isNegative && output !== "0" ? "-" : "") + output;
     }
 
     /**
