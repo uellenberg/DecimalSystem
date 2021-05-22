@@ -1,6 +1,6 @@
 {
   "name": "decimalsystem",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "DecimalSystem is a powerful base conversion library that can convert any (real) number to any base (over 1), including non-integer bases like base PI.",
   "main": "dist/cjs/index.js",
   "types": "dist/cjs/index.d.ts",
