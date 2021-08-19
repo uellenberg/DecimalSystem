@@ -53,7 +53,7 @@
   },
   "homepage": "https://decimalsystem.js.org",
   "devDependencies": {
-    "@types/node": "^15.0.1",
+    "@types/node": "^16.6.2",
     "chai": "^4.3.4",
     "codecov": "^3.8.1",
     "eslint": "^7.25.0",
